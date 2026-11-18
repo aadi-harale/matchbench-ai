@@ -152,7 +152,19 @@ class ToolCall(Base):
 def engine_for(url: str):
     if url.startswith(("postgres://", "postgresql://")):
         url = "postgresql+psycopg://" + url.split("://", 1)[1]
-    engine = create_engine(url, pool_pre_ping=True, pool_size=5, max_overflow=3)
+    connect_args: dict[str, Any] = {}
+    # Supabase's transaction pooler is the right fit for short-lived serverless
+    # functions. It cannot retain named prepared statements across transactions.
+    if url.startswith("postgresql+psycopg://") and ":6543" in url:
+        connect_args["prepare_threshold"] = None
+    engine = create_engine(
+        url,
+        connect_args=connect_args,
+        pool_pre_ping=True,
+        pool_size=2,
+        max_overflow=1,
+        pool_recycle=300,
+    )
     if engine.dialect.name == "sqlite":
         @event.listens_for(engine, "connect")
         def sqlite_pragmas(connection, _):

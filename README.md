@@ -17,7 +17,7 @@ MatchBench is an engineering benchmark for job retrieval, ranking, personalizati
 | What did each ranking stage contribute? | Decision trace and the stored match run |
 | How did the methods perform? | Evaluation and the raw benchmark artifacts |
 
-The 42 postings are illustrative. The demo profile uses public project evidence, with a zero-year experience setting for the eligibility example. Every demo visitor gets an isolated session. The shareable preview uses a claimable Neon PostgreSQL database with a time-limited lease. See [Deploying](#deploying) for the durable setup.
+The 42 postings are illustrative. The demo profile uses public project evidence, with a zero-year experience setting for the eligibility example. Every demo visitor gets an isolated session. The shareable preview uses a durable Supabase PostgreSQL database with pgvector and row-level security enabled.
 
 ## Measured results
 
@@ -152,7 +152,7 @@ Passwords are Argon2-hashed. Sessions use signed, HTTP-only cookies. Ownership g
 
 Use the Docker image on a Python-capable container host, or the included Vercel FastAPI build with the Vite frontend. Set a durable `DATABASE_URL` and a unique `SESSION_SECRET` as host secrets, and set `SECURE_COOKIES=true`. Run `alembic upgrade head` and index the demo file against that database before routing traffic. Check `/ready` for PostgreSQL and model availability, then walk the recruiter demo.
 
-The current public preview's Neon lease expires on **21 November 2026 at 7:38 pm IST**. The owner can claim the project through Neon or migrate to another PostgreSQL service and update the deployment secret. Neon may rotate connection credentials during a claim. Use the local setup for private résumé data. [Claimable Neon](https://neon.com/blog/an-agent-provisions-a-neon-backend-a-human-claims-it-later)
+The public deployment runs in Vercel's Mumbai region and uses Supabase's Mumbai transaction pooler. Candidate and account tables have row-level security enabled, public Data API roles have no table grants, and the server connects with a dedicated backend role. Use the local setup for private resume data.
 
 ### Limits and next experiments
 
