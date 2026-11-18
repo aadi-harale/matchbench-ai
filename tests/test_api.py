@@ -44,6 +44,18 @@ def test_demo_flow_replay_and_counterfactual(client):
     assert search(client, "AI/backend internships working on agents and search")["preference_version"] == 1
 
 
+def test_bootstrap_creates_complete_demo_workspace(client):
+    response = client.post("/api/bootstrap", json={
+        "query": "AI/backend internships working on agents and search", "algorithm": "bm25",
+    })
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["identity"]["demo"] is True
+    assert payload["profile"]["version"] == payload["memory"]["version"] == 1
+    assert payload["run"]["counts"]["indexed"] == 42
+    assert client.get("/api/auth/session").json()["active"] is True
+
+
 def test_persistent_preference_and_removal(client):
     credentials = {"email": "case@example.dev", "password": "test-account-key"}
     assert client.post("/api/auth/register", json=credentials).status_code == 201

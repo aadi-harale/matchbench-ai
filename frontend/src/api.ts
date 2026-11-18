@@ -66,6 +66,7 @@ export type Run = {
   counts: { indexed: number; eligible: number; retrieved: number; excluded: number };
   timing: { filter_ms: number; retrieval_ms: number; rerank_ms: number; total_ms: number };
 };
+export type Bootstrap = { identity: Identity; profile: Profile; memory: MemoryResponse; run: Run };
 export type CompareState = { status: string; rank: number | null; skill_coverage: number | null; checks: Check[] };
 export type Comparison = { before: CompareState; after: CompareState; corpus_size: number };
 type Percentiles = { p50: number; p95: number };

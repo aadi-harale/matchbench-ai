@@ -2,7 +2,7 @@ import { ArrowDownRight, ArrowUpRight, BookOpen, ChevronRight, CircleAlert, Laye
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { api, decimal, defaultQuery, readableError } from "./api";
-import type { Identity, MemoryResponse, Patch, Profile as CandidateRecord, Report, Run } from "./api";
+import type { Bootstrap, Identity, MemoryResponse, Patch, Profile as CandidateRecord, Report, Run } from "./api";
 import Evaluation from "./Evaluation";
 import Explorer, { initialFilters, Status } from "./Explorer";
 import type { Filters } from "./Explorer";
@@ -66,11 +66,17 @@ export default function App() {
     let active = true;
     async function boot() {
       try {
-        const existing = await api<(Identity & { active: true }) | { active: false }>("/api/auth/session");
-        const who: Identity = existing.active ? existing : await api<Identity>("/api/auth/demo", "POST");
+        const initial = await api<Bootstrap>("/api/bootstrap", "POST", {
+          query: defaultQuery, algorithm: initialFilters.algorithm, location: null,
+          employment: null, work_mode: null, limit: 12, strong_only: false,
+        });
         if (!active) return;
-        setIdentity(who);
-        await Promise.all([loadAccount(), search(defaultQuery, initialFilters)]);
+        setIdentity(initial.identity); setProfile(initial.profile); setMemory(initial.memory); setRun(initial.run);
+        previous.current = {
+          key: JSON.stringify({ term: defaultQuery, settings: initialFilters, daily: false }),
+          run: initial.run, daily: false,
+        };
+        setBusy(false);
       } catch (problem) {
         if (active) { setError(readableError(problem)); setBusy(false); }
       } finally { if (active) setFirstLoad(false); }
@@ -78,7 +84,7 @@ export default function App() {
     void boot();
     void api<Report>("/api/evaluation").then(data => { if (active) setReport(data); }).catch(() => {});
     return () => { active = false; };
-  }, [loadAccount, search]);
+  }, []);
 
   function navigate(destination: Page) {
     if (destination === page) return;

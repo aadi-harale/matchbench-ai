@@ -170,6 +170,17 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
                             samesite="lax", max_age=86400 * 7)
         return {"demo": user.demo, "email": user.email}
 
+    def run_search(session: Session, user: User, body: SearchRequest) -> dict[str, Any]:
+        result = execute(session, user, body, models, settings.rerank_timeout_seconds, alpha=alpha)
+        latest = session.scalar(select(IndexImport.created_at).order_by(IndexImport.id.desc()).limit(1))
+        if latest and datetime.fromisoformat(latest) < datetime.now(UTC) - timedelta(hours=settings.index_stale_hours):
+            result["warnings"].append("The job index has not been refreshed recently. Check the original posting.")
+        with metrics_lock:
+            for stage, value in result["timing"].items():
+                key = f"search/{result['algorithm']}/{stage}"
+                durations[key] = durations.get(key, 0.0) + value
+        return result
+
     def owned_run(session: Session, user: User, run_id: str) -> Run:
         run = session.scalar(select(Run).where(Run.id == run_id, Run.user_id == user.id))
         if not run:
@@ -204,6 +215,42 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         seed_candidate(session, user)
         session.commit()
         return cookie(response, user)
+
+    @app.post("/api/bootstrap")
+    def bootstrap(
+        body: SearchRequest, request: Request, response: Response, session: Session = Depends(db_session),
+    ):
+        user = None
+        try:
+            claims = decode(request.cookies.get(COOKIE, ""), settings)
+            candidate = session.get(User, claims["sub"])
+            if candidate and candidate.session_version == claims["sv"]:
+                user = candidate
+        except (jwt.InvalidTokenError, KeyError):
+            pass
+        created = user is None
+        if created:
+            user = User(demo=True)
+            session.add(user)
+            session.flush()
+            seed_candidate(session, user)
+        assert user is not None
+        profile_version, current_profile = profile_at(session, user)
+        preference_version, current_preferences = preference_at(session, user)
+        history = list(session.scalars(select(PreferenceEvent).where(
+            PreferenceEvent.user_id == user.id
+        ).order_by(PreferenceEvent.version.desc()).limit(30)))
+        result = run_search(session, user, body)
+        session.commit()
+        if created:
+            cookie(response, user)
+        return {
+            "identity": {"demo": user.demo, "email": user.email},
+            "profile": {"version": profile_version, "profile": current_profile},
+            "memory": {"version": preference_version, "preferences": current_preferences,
+                       "history": [event_view(row) for row in history]},
+            "run": result,
+        }
 
     @app.post("/api/auth/register", status_code=201)
     def register(body: Credentials, response: Response, session: Session = Depends(db_session)):
@@ -315,14 +362,7 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
 
     @app.post("/api/search")
     def search(body: SearchRequest, session: Session = Depends(db_session), user: User = Depends(get_user)):
-        result = execute(session, user, body, models, settings.rerank_timeout_seconds, alpha=alpha)
-        latest = session.scalar(select(IndexImport.created_at).order_by(IndexImport.id.desc()).limit(1))
-        if latest and datetime.fromisoformat(latest) < datetime.now(UTC) - timedelta(hours=settings.index_stale_hours):
-            result["warnings"].append("The job index has not been refreshed recently. Check the original posting.")
-        with metrics_lock:
-            for stage, value in result["timing"].items():
-                key = f"search/{result['algorithm']}/{stage}"
-                durations[key] = durations.get(key, 0.0) + value
+        result = run_search(session, user, body)
         session.commit()
         return result
 
