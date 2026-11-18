@@ -166,7 +166,7 @@ export default function App() {
     <main className="shell" id="workspace">
       {page === "Explorer" && <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-copy">
-          <h1 id="hero-heading">Find the jobs you<br className="hero-break" /> can actually take.</h1>
+          <h1 id="hero-heading">Find the jobs you can actually take.</h1>
           <p>MatchBench ranks jobs against your verified experience and dealbreakers, then shows the evidence behind each decision.</p>
           <div className="actions">
             <button type="button" className="primary" onClick={inspect} disabled={firstLoad}><Play size={16} aria-hidden /> Inspect a rejected match</button>
