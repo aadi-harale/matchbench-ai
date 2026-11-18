@@ -23,6 +23,19 @@ def job_text(job: Job) -> str:
     return f"{job.title}. {job.role}. {', '.join(job.skills)}. {job.description}"
 
 
+def source_fingerprint(job: Job) -> str:
+    return digest([
+        job.company.casefold(), job.title.casefold(), sorted(location.casefold() for location in job.locations),
+        job.employment, " ".join(job.description.casefold().split()),
+    ])
+
+
+def batches(values: Iterable[str], size: int = 400) -> Iterable[list[str]]:
+    values = list(values)
+    for offset in range(0, len(values), size):
+        yield values[offset:offset + size]
+
+
 def read_records(path: Path) -> list[dict[str, Any]]:
     if path.suffix.lower() == ".csv":
         with path.open(encoding="utf-8-sig", newline="") as stream:
@@ -49,52 +62,68 @@ def ingest(
     lexical_only: bool = False,
 ) -> dict[str, int | float]:
     started = perf_counter()
+    prepared = [(Job.model_validate(raw), raw) for raw in records]
+    inputs = [(job, raw, source_fingerprint(job)) for job, raw in prepared]
     if session.bind and session.bind.dialect.name == "postgresql":
         session.execute(text("SELECT pg_advisory_xact_lock(47824412)"))
     else:
         session.execute(text("BEGIN IMMEDIATE"))
     counts: dict[str, int | float] = dict(inserted=0, updated=0, unchanged=0, duplicates=0, embedded=0)
+    existing: dict[str, JobRow] = {}
+    fingerprints: dict[str, set[str]] = {}
+    latest: dict[str, tuple[str, str]] = {}
+    for fingerprints_batch in batches({item[2] for item in inputs}):
+        for uid, key in session.execute(select(JobRow.id, JobRow.fingerprint).where(
+            JobRow.fingerprint.in_(fingerprints_batch)
+        )):
+            fingerprints.setdefault(key, set()).add(uid)
+    for id_batch in batches({item[0].id for item in inputs}):
+        rows = session.execute(select(JobRow, JobVersion.content_hash, JobVersion.embedding_key).join(
+            JobVersion, (JobVersion.job_id == JobRow.id) & (JobVersion.version == JobRow.current_version)
+        ).where(JobRow.id.in_(id_batch)))
+        for row, content_hash, embedding_key in rows:
+            existing[row.id] = row
+            latest[row.id] = (content_hash, embedding_key)
+            fingerprints.setdefault(row.fingerprint, set()).add(row.id)
+
     wanted: dict[str, str] = {}
-    for raw in records:
-        job = Job.model_validate(raw)
+    versions = []
+    for job, raw, fingerprint in inputs:
         content = job.model_dump(mode="json")
-        clean = " ".join(job.description.casefold().split())
-        fingerprint = digest([job.company.casefold(), job.title.casefold(), sorted(
-            location.casefold() for location in job.locations
-        ), job.employment, clean])
-        row = session.get(JobRow, job.id)
-        duplicate = session.scalar(select(JobRow.id).where(
-            JobRow.fingerprint == fingerprint, JobRow.id != job.id
-        ).limit(1))
-        if duplicate:
+        row = existing.get(job.id)
+        if fingerprints.get(fingerprint, set()) - {job.id}:
             counts["duplicates"] += 1
             continue
-        previous = session.scalar(select(JobVersion).where(
-            JobVersion.job_id == job.id, JobVersion.version == row.current_version
-        )) if row else None
         content_hash = digest(content)
         document = job_text(job)
         key = digest([EMBED_ID, document])
-        if not lexical_only and session.get(JobEmbedding, key) is None:
+        if not lexical_only:
             wanted[key] = document
-        if previous and previous.content_hash == content_hash and previous.embedding_key == key:
+        if latest.get(job.id) == (content_hash, key):
             counts["unchanged"] += 1
             continue
         if row:
+            fingerprints[row.fingerprint].discard(job.id)
             row.fingerprint = fingerprint
             row.current_version += 1
             counts["updated"] += 1
         else:
             row = JobRow(id=job.id, fingerprint=fingerprint, current_version=1)
             session.add(row)
+            existing[job.id] = row
             counts["inserted"] += 1
-        session.flush()
-        session.add(JobVersion(
+        latest[job.id] = (content_hash, key)
+        fingerprints.setdefault(fingerprint, set()).add(job.id)
+        versions.append(JobVersion(
             job_id=job.id, version=row.current_version, content_hash=content_hash, embedding_key=key,
             data=content, raw=raw,
         ))
-        session.flush()
 
+    session.flush()
+    session.add_all(versions)
+    for key_batch in batches(wanted):
+        for cached in session.scalars(select(JobEmbedding.key).where(JobEmbedding.key.in_(key_batch))):
+            del wanted[cached]
     if wanted:
         embeddings = models.embed(list(wanted.values()))
         for key, vector in zip(wanted, embeddings, strict=True):

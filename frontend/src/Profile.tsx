@@ -2,10 +2,11 @@ import { BadgeCheck, ExternalLink, FileText, Plus, UploadCloud } from "lucide-re
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { api, readableError } from "./api";
-import type { Candidate, Evidence, Profile as ProfileData } from "./api";
+import type { Candidate, Evidence, MemoryResponse, Profile as ProfileData } from "./api";
 
-export default function Profile({ record, demo, onSave }: {
+export default function Profile({ record, demo, onSave, memory, openMemory }: {
   record: ProfileData | null; demo: boolean; onSave: (profile: ProfileData) => void;
+  memory: MemoryResponse | null; openMemory: () => void;
 }) {
   const [draft, setDraft] = useState<Candidate | null>(null);
   const [notice, setNotice] = useState("");
@@ -15,6 +16,9 @@ export default function Profile({ record, demo, onSave }: {
   const candidate = draft ?? record?.profile;
   function update(patch: Partial<Candidate>) {
     if (candidate) setDraft({ ...candidate, ...patch });
+  }
+  function editEvidence(index: number, edit: Partial<Evidence>) {
+    if (candidate) update({ evidence: candidate.evidence.map((entry, at) => at === index ? { ...entry, ...edit } : entry) });
   }
   async function upload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -38,6 +42,7 @@ export default function Profile({ record, demo, onSave }: {
       const updated = await api<ProfileData>("/api/profile", "PUT", { version: record.version, profile: {
         ...candidate, education: candidate.education.filter(line => line.trim()),
         experience: candidate.experience.filter(line => line.trim()), projects: candidate.projects.filter(line => line.trim()),
+        authorization: candidate.authorization.map(value => value.trim()).filter(Boolean),
       } });
       onSave(updated); setDraft(null); setNotice("Profile saved. Future searches will use this evidence.");
     } catch (error) { setNotice(readableError(error)); }
@@ -58,6 +63,17 @@ export default function Profile({ record, demo, onSave }: {
       </label>
     </div>
     {demo && <p className="info-line"><FileText size={16} aria-hidden /> Demo profile uses public project evidence and a zero-year experience setting for the eligibility scenario.</p>}
+    {memory && <div className="section-top memory-summary"><div><h3>Preferences affecting this profile</h3>
+      <p>{[
+        memory.preferences.employment,
+        memory.preferences.locations && (memory.preferences.locations as string[]).join(", "),
+        memory.preferences.paid_only && "Paid roles only",
+        memory.preferences.minimum_stipend && `₹${Number(memory.preferences.minimum_stipend).toLocaleString("en-IN")}/month minimum`,
+        (memory.preferences.denied_roles as string[]).length && `Excludes ${(memory.preferences.denied_roles as string[]).join(", ")}`,
+        (memory.preferences.preferred_roles as string[]).length && `Prefers ${(memory.preferences.preferred_roles as string[]).join(", ")}`,
+      ].filter(Boolean).join(" / ") || "No preferences saved."}</p></div>
+      <button className="secondary" type="button" onClick={openMemory}>Memory v{memory.version}</button>
+    </div>}
     {notice && <p className="notice" role="status">{notice}</p>}
     {!candidate ? <p className="empty">Loading the candidate profile…</p> : <form onSubmit={save}>
       <div className="input-grid profile-inputs">
@@ -72,15 +88,26 @@ export default function Profile({ record, demo, onSave }: {
           <textarea rows={3} value={candidate[field].join("\n")} onChange={event => update({ [field]: event.target.value.split("\n") })} />
         </label>)}
       </div>
+      <details className="profile-eligibility"><summary>Availability and work authorization</summary>
+        <div className="input-grid">
+          <label>Available from<input type="date" value={candidate.available_from?.slice(0, 10) ?? ""}
+            onChange={event => update({ available_from: event.target.value ? `${event.target.value}T00:00:00Z` : null })} /></label>
+          <label>Work authorization<input value={candidate.authorization.join(",")} placeholder="India, United Kingdom"
+            onChange={event => update({ authorization: event.target.value.split(",") })} /></label>
+        </div>
+      </details>
       <div className="section-top tight"><div><h3>Skill evidence</h3><p>Accept each excerpt you want the ranking to use.</p></div></div>
       <ul className="evidence-table">
         {candidate.evidence.map((item, index) => <li key={item.id}>
           <div className="evidence-skill"><BadgeCheck size={19} aria-hidden /><strong>{item.skill}</strong></div>
           <div><p>{item.excerpt}</p>{item.source_url ?
-            <a href={item.source_url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={13} aria-hidden /></a> : <small>{item.source}</small>}</div>
+            <a href={item.source_url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={13} aria-hidden /></a> : <small>{item.source}</small>}
+            {item.method !== "public source" && <details className="evidence-edit"><summary>Correct evidence</summary>
+              <label>Skill<input maxLength={120} value={item.skill} onChange={event => editEvidence(index, { skill: event.target.value, review: "pending" })} /></label>
+              <label>Excerpt<textarea maxLength={600} value={item.excerpt} onChange={event => editEvidence(index, { excerpt: event.target.value, review: "pending" })} /></label>
+            </details>}</div>
           <label><span className="sr-only">Review {item.skill}</span><select value={item.review}
-            onChange={event => update({ evidence: candidate.evidence.map((entry, at) => at === index ?
-              { ...entry, review: event.target.value as Evidence["review"] } : entry) })}>
+            onChange={event => editEvidence(index, { review: event.target.value as Evidence["review"] })}>
             <option value="pending">Needs review</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option>
           </select></label>
         </li>)}

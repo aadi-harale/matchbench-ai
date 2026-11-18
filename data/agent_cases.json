@@ -1,0 +1,194 @@
+[
+  {
+    "message": "No frontend-heavy roles.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "Please exclude frontend roles.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "I don't want any frontend positions.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "Avoid frontend work completely.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "Show me less frontend.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "Fewer frontend roles, please.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "I'd prefer fewer frontend-heavy roles.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "Show fewer frontend postings.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "frontend"
+  },
+  {
+    "message": "No unpaid internships.",
+    "field": "paid_only",
+    "operation": "set",
+    "value": true
+  },
+  {
+    "message": "I don't want unpaid jobs anymore.",
+    "field": "paid_only",
+    "operation": "set",
+    "value": true
+  },
+  {
+    "message": "Paid internships only.",
+    "field": "paid_only",
+    "operation": "set",
+    "value": true
+  },
+  {
+    "message": "Exclude unpaid internships from my search.",
+    "field": "paid_only",
+    "operation": "set",
+    "value": true
+  },
+  {
+    "message": "Allow Hyderabad.",
+    "field": "locations",
+    "operation": "add",
+    "value": "hyderabad"
+  },
+  {
+    "message": "Please add Hyderabad to my accepted cities.",
+    "field": "locations",
+    "operation": "add",
+    "value": "hyderabad"
+  },
+  {
+    "message": "I can relocate to Hyderabad.",
+    "field": "locations",
+    "operation": "add",
+    "value": "hyderabad"
+  },
+  {
+    "message": "Include Hyderabad in my location options.",
+    "field": "locations",
+    "operation": "add",
+    "value": "hyderabad"
+  },
+  {
+    "message": "Only show roles paying at least INR 30k.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 30000
+  },
+  {
+    "message": "Set my minimum to INR 30000 per month.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 30000
+  },
+  {
+    "message": "I need at least ₹30,000 a month.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 30000
+  },
+  {
+    "message": "At least 30k INR monthly.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 30000
+  },
+  {
+    "message": "I prefer backend.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "backend"
+  },
+  {
+    "message": "Show me more backend jobs.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "backend"
+  },
+  {
+    "message": "I'd like more backend work.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "backend"
+  },
+  {
+    "message": "Please rank backend more highly.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "backend"
+  },
+  {
+    "message": "Allow frontend again.",
+    "field": "denied_roles",
+    "operation": "remove",
+    "value": "frontend"
+  },
+  {
+    "message": "Include frontend roles again.",
+    "field": "denied_roles",
+    "operation": "remove",
+    "value": "frontend"
+  },
+  {
+    "message": "Undo my frontend exclusion.",
+    "field": "denied_roles",
+    "operation": "remove",
+    "value": "frontend"
+  },
+  {
+    "message": "Show frontend again.",
+    "field": "denied_roles",
+    "operation": "remove",
+    "value": "frontend"
+  },
+  {
+    "message": "Frontend only when it pays more.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "I'd relocate to Bangalore if the role is in AI.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "I like team lunches.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Select jobs based on my gender.",
+    "field": null,
+    "operation": null,
+    "value": null
+  }
+]

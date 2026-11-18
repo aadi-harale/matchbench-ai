@@ -80,7 +80,10 @@ export type Report = {
   paired_cluster_bootstrap_ndcg_delta: [number, number];
   contracts: { explanation_cases: number; grounded: number; missing_skill_correct: number; consistent: number;
     unsupported_claim_rate: number; local_preference_cases: number; local_preferences_correct: number;
-    hosted_llm: { valid: number; cases: number; correct: number } | null };
+    hosted_llm: { valid: number; cases: number; correct: number; model?: string } | null };
+  index_load?: { jobs: number; scope: string; metadata_only_updates: number; description_updates: number;
+    initial: { embedded: number; elapsed_ms: number }; identical_reimport: { embedded: number; elapsed_ms: number };
+    change_batch: { updated: number; embedded: number; elapsed_ms: number }; latency: {total_ms: Percentiles} };
 };
 
 export const defaultQuery = "AI/backend internships working on agents and search";

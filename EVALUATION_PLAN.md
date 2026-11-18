@@ -15,7 +15,7 @@ Use the same labeled query, corpus, and eligibility policy for each variant. Gra
 
 ## Agent and evidence checks
 
-Target at least 30 cases across missing skill detection, validated structure, unsupported assertions, conditional or conflicting preferences, dealbreaker compliance, and repeated rendering. Hosted model evaluation is reported separately from deterministic contract checks and mocked failure tests. Evaluate every explanation against source-linked evidence and job requirements. Keep rejection and uncertain outcomes visible in the report.
+The evidence contract has 36 fixtures for citation, missing skills and consistent rendering. The provider benchmark runs separately on 32 labeled preference messages. It requires a provider result that passes schema and policy validation and matches the expected field, operation, and value, or asks for clarification where appropriate. Mocked failure tests cover malformed responses independently. [Preference cases](data/agent_cases.json) · [Measured provider report](data/agent_benchmark.json)
 
 ## Publish policy
 

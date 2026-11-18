@@ -49,6 +49,14 @@ export default function Evaluation({ report }: { report: Report | null }) {
         </tr>)}</tbody>
       </table></div>
     </section>
+    {report.index_load && <section className="surface page-section">
+      <h3>Incremental index benchmark</h3>
+      <div className="bench-metadata"><span><strong>{report.index_load.jobs.toLocaleString()}</strong> generated postings</span>
+        <span><strong>{report.index_load.identical_reimport.embedded}</strong> embeddings on identical re-import</span>
+        <span><strong>{report.index_load.change_batch.embedded}/{report.index_load.change_batch.updated}</strong> changed jobs re-embedded</span>
+        <span><strong>{report.index_load.latency.total_ms.p95.toFixed(0)} ms</strong> p95 ranking</span></div>
+      <p className="fine-print">{report.index_load.scope} The update batch changed {report.index_load.metadata_only_updates} metadata records and {report.index_load.description_updates} descriptions.</p>
+    </section>}
     <section className="surface page-section">
       <h3>Explanation and agent evaluation</h3>
       <div className="bench-metadata">
@@ -56,9 +64,9 @@ export default function Evaluation({ report }: { report: Report | null }) {
         <span><strong>{report.contracts.missing_skill_correct}/{report.contracts.explanation_cases}</strong> missing skills correctly reported</span>
         <span><strong>{report.contracts.local_preferences_correct}/{report.contracts.local_preference_cases}</strong> local preference cases correct</span>
       </div>
-      <p className="fine-print">These are deterministic contract checks. {report.contracts.hosted_llm ?
-        `Hosted model completed ${report.contracts.hosted_llm.valid}/${report.contracts.hosted_llm.cases} valid responses.` :
-        "Hosted model measurements require a configured provider."}</p>
+      <p className="fine-print">{report.contracts.hosted_llm ?
+        `Provider test (${report.contracts.hosted_llm.model ?? "configured model"}): ${report.contracts.hosted_llm.valid}/${report.contracts.hosted_llm.cases} responses passed validation and ${report.contracts.hosted_llm.correct}/${report.contracts.hosted_llm.cases} matched the expected change.` :
+        "The results above are deterministic contract checks. Provider measurements require a configured model."}</p>
     </section>
   </div>;
 }

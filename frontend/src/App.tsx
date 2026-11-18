@@ -162,7 +162,8 @@ export default function App() {
       {!identity && firstLoad && <div className="surface empty" role="status">Starting the demo session…</div>}
       {!identity && !firstLoad && (page === "Explorer" || page === "Daily matches") &&
         <button type="button" className="secondary" onClick={() => setAccountOpen(true)}>Start a session</button>}
-      {page === "Candidate profile" && <Profile key={identity?.email ?? "demo"} record={profile} demo={!!identity?.demo} onSave={setProfile} />}
+      {page === "Candidate profile" && <Profile key={identity?.email ?? "demo"} record={profile} demo={!!identity?.demo}
+        onSave={setProfile} memory={memory} openMemory={() => navigate("Memory")} />}
       {page === "Memory" && <Memory state={memory} refresh={refreshMemory} save={savePreference} />}
       {page === "Evaluation" && <Evaluation report={report} />}
       <footer className="footer"><span>{identity?.demo ? "Illustrative postings. Demo profile cites public project evidence." : "MatchBench AI · Evidence-linked job ranking"}</span>

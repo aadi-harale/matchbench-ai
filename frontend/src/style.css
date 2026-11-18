@@ -176,6 +176,10 @@ label.search-input > input { border: 0; margin-top: 0; }
 .section-top p, .intro { margin-top: 4px; max-width: 75ch; }
 .info-line { display: flex; align-items: flex-start; gap: 8px; color: var(--muted); font-size: .89rem; margin-bottom: 17px; }
 .info-line svg { margin-top: 3px; }
+.memory-summary { background: var(--bg); padding: 11px; border-radius: 6px; }
+.profile-eligibility, .evidence-edit { margin-bottom: 9px; color: var(--muted); }
+.profile-eligibility summary, .evidence-edit summary { cursor: pointer; font-weight: 600; font-size: .85rem; }
+.profile-eligibility .input-grid, .evidence-edit label { margin-top: 6px; }
 .upload { position: relative; cursor: pointer; white-space: nowrap; }
 .upload input { opacity: 0; position: absolute; inset: 0; width: 100%; cursor: pointer; }
 .upload:focus-within { outline: 3px solid var(--blue); outline-offset: 4px; }

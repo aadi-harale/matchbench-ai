@@ -52,3 +52,15 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up --build --detach
+      - run: |
+          curl --fail --silent --show-error --retry 35 --retry-all-errors --retry-delay 3 http://127.0.0.1:8000/ready | jq -e '.database == "postgresql" and .jobs == 42 and .embeddings and .reranker'
+          curl --fail --silent --show-error http://127.0.0.1:8000/ | grep -q 'MatchBench AI'
+      - if: failure()
+        run: docker compose logs --no-color
+      - if: always()
+        run: docker compose down

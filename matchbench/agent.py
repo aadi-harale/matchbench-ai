@@ -9,6 +9,7 @@ import httpx
 from pydantic import Field, ValidationError
 
 from .config import Settings
+from .ranking import city
 from .schemas import PreferencePatch, Preferences, StrictModel
 from .state import apply_changes
 
@@ -22,13 +23,25 @@ class Intent(StrictModel):
     action: Literal["exclude_role", "prefer_role", "less_role", "allow_role", "allow_city", "paid_only", "minimum", "ask"]
     value: str
 
-    def to_proposal(self) -> Proposal:
+    def to_proposal(self, message: str) -> Proposal:
         if self.action == "ask":
             return Proposal(changes=[], question="Which unconditional preference should I save?")
         value = self.value.casefold().strip()
+        source = message.casefold().replace("’", "'")
+        if re.search(r"\b(if|unless|only when|except when)\b", source):
+            raise ValueError("Conditional request requires clarification")
         roles = {"backend", "frontend", "search", "platform", "data", "evaluation", "mobile", "security"}
         if self.action in {"exclude_role", "prefer_role", "less_role", "allow_role"} and value not in roles:
             raise ValueError("Unknown role family")
+        if self.action in {"exclude_role", "prefer_role", "less_role", "allow_role"}:
+            if value not in re.sub(r"(?<=front)[ -]|(?<=back)[ -]", "", source):
+                raise ValueError("The proposed role was not mentioned")
+        if self.action == "exclude_role" and not re.search(r"\b(no|exclude|avoid|don't want|never)\b", source):
+            raise ValueError("Hard exclusion requires an explicit request")
+        if self.action == "allow_city":
+            aliases = {"bengaluru": ("bangalore", "bengaluru"), "gurugram": ("gurgaon", "gurugram")}
+            if not value or not any(name in source for name in aliases.get(city(value), (value,))):
+                raise ValueError("The proposed city was not mentioned")
         if self.action == "allow_role":
             return Proposal(changes=[
                 PreferencePatch(field="denied_roles", operation="remove", value=value),
@@ -51,10 +64,16 @@ SCHEMA_PROMPT = (
     'Only use exclude_role for an explicit ban, less_role for fewer results, prefer_role for more, '
     'allow_role for reversing an exclusion, allow_city for adding a location, paid_only for no unpaid jobs, '
     'minimum for an INR amount (30k is 30000). Use ask for conditional or out-of-domain requests. '
-    'Examples: No frontend roles -> exclude_role, frontend. Show less frontend -> less_role, frontend. '
-    'Allow Hyderabad -> allow_city, Hyderabad. No unpaid jobs -> paid_only, yes. '
-    'Only if it pays well -> ask, none.'
+    'Use the role or city named by the user. Allowed roles include frontend, backend, search, data and platform.'
 )
+SCHEMA_EXAMPLES = [
+    {"role": "user", "content": "No frontend roles."},
+    {"role": "assistant", "content": '{"action":"exclude_role","value":"frontend"}'},
+    {"role": "user", "content": "I would relocate only if the work is AI."},
+    {"role": "assistant", "content": '{"action":"ask","value":""}'},
+    {"role": "user", "content": "Allow Pune in my search."},
+    {"role": "assistant", "content": '{"action":"allow_city","value":"Pune"}'},
+]
 
 
 def local_proposal(message: str) -> Proposal:
@@ -132,7 +151,7 @@ def agent_proposal(
                 try:
                     body = {"model": settings.llm_model, "messages": history, "temperature": 0}
                     if settings.llm_mode == "schema":
-                        body.update({"messages": [{"role": "system", "content": SCHEMA_PROMPT},
+                        body.update({"messages": [{"role": "system", "content": SCHEMA_PROMPT}, *SCHEMA_EXAMPLES,
                                                   {"role": "user", "content": message}],
                                      "max_tokens": 90, "response_format": {"type": "json_schema", "json_schema": {
                                          "name": "job_preference", "schema": Intent.model_json_schema(), "strict": True,
@@ -152,7 +171,7 @@ def agent_proposal(
                     reply = payload["choices"][0]["message"]
                     if settings.llm_mode == "schema":
                         tool_name = "propose_preference_change"
-                        proposal = Intent.model_validate_json(reply["content"]).to_proposal()
+                        proposal = Intent.model_validate_json(reply["content"]).to_proposal(message)
                         apply_changes(preferences, proposal.changes)
                         traces.append(trace(tool_name, started, "validated"))
                         return proposal, provider, usage, traces
@@ -172,6 +191,8 @@ def agent_proposal(
                     traces.append(trace(tool_name, started, "validated"))
                 except (ValueError, KeyError, TypeError, httpx.HTTPError, IndexError):
                     traces.append(trace(tool_name, started, "rejected"))
+                    if settings.llm_mode == "schema" and tool_name == "propose_preference_change":
+                        break
                     history.append({"role": "user", "content": "Return one valid tool call or request clarification."})
         provider += " → local rules"
 

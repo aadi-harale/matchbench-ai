@@ -132,11 +132,13 @@ def test_pgvector_and_postgres_transactions(tmp_path):
     Base.metadata.create_all(database)
     factory = sessions(database)
     record = job("ci-test-vector").model_dump(mode="json")
-    with factory.begin() as session:
+    with factory() as session:
         ingest(session, [record], FakeEmbeddings(tmp_path))
+        session.flush()
         score = cosine_resolver(session, revisions(session))([1.0] + [0.0] * 383)
         assert score["ci-test-vector"] == pytest.approx(1.0)
         user = User(demo=True)
         session.add(user)
         session.flush()
         assert session.get(User, user.id) is not None
+        session.rollback()

@@ -1,3 +1,4 @@
+import json
 from collections import Counter
 from collections.abc import Iterator
 from contextlib import asynccontextmanager
@@ -370,7 +371,12 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         path = DATA / "benchmark.json"
         if not path.is_file():
             raise HTTPException(404, "Run the benchmark to publish measured results.")
-        return FileResponse(path, media_type="application/json")
+        report = json.loads(path.read_text(encoding="utf-8"))
+        for name, key in [("agent_benchmark.json", "contracts"), ("load_benchmark.json", "index_load")]:
+            artifact = DATA / name
+            if artifact.is_file():
+                report[key] = json.loads(artifact.read_text(encoding="utf-8"))
+        return report
 
     @app.get("/api/account/export")
     def export(session: Session = Depends(db_session), user: User = Depends(get_user)):

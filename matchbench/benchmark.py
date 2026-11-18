@@ -59,35 +59,29 @@ def contract_evaluation(jobs: list[Job], settings: Settings, live: bool) -> dict
             "id": job.id, "grounded": set(evidence_ids) == {evidence.id}, "missing": actual == expected_missing,
             "consistent": result == explain(job, profile, []),
         })
-    messages = [
-        ("No frontend-heavy roles", "denied_roles"),
-        ("Show me less frontend", "less_roles"),
-        ("No unpaid internships", "paid_only"),
-        ("I'd relocate to Bangalore for AI work", "locations"),
-        ("Only show roles paying at least INR 30k", "minimum_stipend"),
-        ("I prefer backend", "preferred_roles"),
-        ("Allow frontend again", "denied_roles"),
-        ("Frontend only when it pays more", None),
-    ]
+    messages = load_json("agent_cases.json")
 
-    def expected_field(proposal, field):
-        if field is None:
+    def expected_change(proposal, case):
+        if case["field"] is None:
             return not proposal.changes and bool(proposal.question)
-        return any(patch.field == field for patch in proposal.changes)
+        return any(patch.field == case["field"] and patch.operation == case["operation"]
+                   and str(patch.value).casefold() == str(case["value"]).casefold() for patch in proposal.changes)
 
     hosted: dict[str, Any] | None = None
     if live:
         if not settings.llm_enabled:
             raise RuntimeError("--live-llm requires OPENAI_API_KEY or an OpenAI-compatible LLM_BASE_URL")
         items = []
-        for message, expected in messages:
-            proposal, provider, usage, traces = agent_proposal(settings, Preferences(), message, demo=False)
+        for case in messages:
+            proposal, provider, usage, traces = agent_proposal(settings, Preferences(), case["message"], demo=False)
             valid = provider == settings.llm_model and any(
                 trace["name"] == "propose_preference_change" and trace["status"] == "validated" for trace in traces
             )
-            items.append({"message": message, "valid": valid, "correct": valid and expected_field(proposal, expected),
-                          "provider": provider, "usage": usage, "tool_calls": traces})
-        hosted = {"cases": len(items), "valid": sum(row["valid"] for row in items),
+            items.append({"message": case["message"], "valid": valid, "correct": valid and expected_change(proposal, case),
+                          "provider": provider, "usage": usage, "tool_calls": traces,
+                          "changes": [patch.model_dump(mode="json") for patch in proposal.changes]})
+        hosted = {"model": settings.llm_model, "mode": settings.llm_mode,
+                  "cases": len(items), "valid": sum(row["valid"] for row in items),
                   "correct": sum(row["correct"] for row in items), "items": items}
     return {
         "explanation_cases": len(cases), "grounded": sum(row["grounded"] for row in cases),
@@ -95,7 +89,7 @@ def contract_evaluation(jobs: list[Job], settings: Settings, live: bool) -> dict
         "consistent": sum(row["consistent"] for row in cases),
         "unsupported_claim_rate": sum(not row["grounded"] for row in cases) / len(cases),
         "local_preference_cases": len(messages),
-        "local_preferences_correct": sum(expected_field(local_proposal(message), field) for message, field in messages),
+        "local_preferences_correct": sum(expected_change(local_proposal(case["message"]), case) for case in messages),
         "hosted_llm": hosted,
     }
 
@@ -201,11 +195,21 @@ def run_benchmark(settings: Settings, live: bool = False) -> dict[str, Any]:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=DATA / "benchmark.json")
+    parser.add_argument("--output", type=Path)
     parser.add_argument("--live-llm", action="store_true")
+    parser.add_argument("--contracts-only", action="store_true")
     args = parser.parse_args()
+    output = args.output or DATA / ("agent_benchmark.json" if args.contracts_only else "benchmark.json")
+    if args.contracts_only:
+        jobs = sorted((Job.model_validate(job) for job in load_json("jobs.json")), key=lambda job: job.id)
+        report = contract_evaluation(jobs, Settings(), args.live_llm)
+        output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        print(json.dumps({key: value if key != "hosted_llm" or value is None else {
+            k: v for k, v in value.items() if k != "items"
+        } for key, value in report.items()}, indent=2))
+        return
     report = run_benchmark(Settings(), args.live_llm)
-    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"queries": report["queries"], "jobs": report["jobs"], "ranking": report["ranking"]}, indent=2))
 
 

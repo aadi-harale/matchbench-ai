@@ -86,7 +86,7 @@ def main():
         parser.error("--size must be between 2 and 50000")
     result = run(args.size, Settings())
     body = json.dumps(result, indent=2)
-    args.output.write_text(body + "\n", encoding="utf-8")
+    args.output.write_text(body + "\n", encoding="utf-8", newline="\n")
     print(body)
 
 
