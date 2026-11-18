@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 from matchbench.agent import Proposal, local_proposal
 from matchbench.benchmark import quality
+from matchbench.large_benchmark import generated_records
 from matchbench.ranking import Corpus, eligibility, explain, normalized, rank
 from matchbench.resume import extract_document, parse_profile
 from matchbench.schemas import Algorithm, Evidence, Job, PreferencePatch, Preferences, Profile, SearchRequest
@@ -121,7 +122,7 @@ def test_schema_conflicts_and_metrics():
         ])
     assert normalized({"a": 3, "b": 5}) == {"a": 0, "b": 1}
     assert quality(["a", "b"], {"a": 3, "b": 2}) == {
-        "precision_at_5": .4, "recall_at_10": 1, "mrr": 1, "ndcg_at_10": 1,
+        "precision_at_5": .4, "recall_at_10": 1, "recall_at_20": 1, "mrr": 1, "ndcg_at_10": 1,
     }
 
 
@@ -177,3 +178,14 @@ def test_agent_rejects_malformed_provider_output(monkeypatch):
     assert usage["attempts"] == 3
     assert proposal.changes[0].field == "denied_roles"
     assert [trace["status"] for trace in traces] == ["rejected", "rejected", "rejected", "validated"]
+
+
+def test_large_evaluation_fixture_has_frozen_splits_and_labels():
+    jobs, queries, judgments = generated_records()
+    assert len(jobs) == 300
+    assert len(queries) == len(judgments) == 120
+    assert sum(query["split"] == "development" for query in queries) == 20
+    assert sum(query["split"] == "heldout" for query in queries) == 100
+    assert len({job["id"] for job in jobs}) == 300
+    assert all(job["illustrative"] and job["source"] == "synthetic evaluation fixture" for job in jobs)
+    assert all(set(row["grades"].values()) <= {1, 2, 3} for row in judgments)

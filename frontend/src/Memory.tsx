@@ -49,6 +49,15 @@ export default function Memory({ state, refresh, save }: {
     } catch (error) { setNotice(readableError(error)); }
     finally { setBusy(false); }
   }
+  async function reject() {
+    if (!proposal) return;
+    setBusy(true);
+    try {
+      await api(`/api/agent/${proposal.id}/reject`, "POST");
+      setProposal(null); setNotice("Proposal rejected. Saved memory was not changed.");
+    } catch (error) { setNotice(readableError(error)); }
+    finally { setBusy(false); }
+  }
   async function direct(patch: Patch) {
     if (!state) return;
     setBusy(true);
@@ -81,7 +90,7 @@ export default function Memory({ state, refresh, save }: {
         {proposal.proposal.changes.length > 0 && <>
           <ul>{proposal.proposal.changes.map((patch, index) => <li key={index}>{description(patch)}</li>)}</ul>
           <div className="actions"><button type="button" className="primary" disabled={busy} onClick={() => { void confirm(); }}><Check size={17} aria-hidden /> Confirm change</button>
-            <button type="button" className="secondary" onClick={() => setProposal(null)}>Dismiss</button></div>
+            <button type="button" className="secondary" disabled={busy} onClick={() => { void reject(); }}><X size={16} aria-hidden /> Reject</button></div>
         </>}
         <details className="tool-disclosure"><summary>Tool calls</summary>
           <ul>{proposal.tool_calls.map((call, index) => <li key={index}><code>{call.name}</code> {call.status} · {call.elapsed_ms.toFixed(2)} ms</li>)}</ul>

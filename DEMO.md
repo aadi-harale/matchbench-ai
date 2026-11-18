@@ -5,13 +5,13 @@
 | Time | Show |
 | --- | --- |
 | 0:00–0:22 | Open the public demo. Point out the senior role with high raw similarity and a five-year requirement. Click **Inspect a rejected match**. |
-| 0:22–0:50 | Open **Decision trace**. Show the experience check, raw similarity, and unranked result. Switch back to **Ranked** and open the internship. Point to the linked evidence and the uncovered skill. |
+| 0:22–0:50 | Open **Decision trace**. Show the experience check, raw similarity, and unranked result. Run **Exact replay** and show that the frozen ordering matches. Switch back to **Ranked** and open the internship. |
 | 0:50–1:25 | Choose **Set aside**, select **Agent Infrastructure Intern**, and open **What if?**. Recompute with Hyderabad allowed. Show the before/after eligibility and rank. |
-| 1:25–1:58 | Open **Memory**, select **No frontend-heavy roles**, interpret and approve. Show the event. Search again in Explorer and point out the changed shortlist. |
-| 1:58–2:32 | Open **Evaluation**. Compare top-five precision, nDCG, and p95 across methods. Explain the small held-out scope and the observed cross-encoder tradeoff. Show the index churn experiment. |
+| 1:25–1:58 | Open **Memory**, select **No frontend-heavy roles**, interpret it, and inspect the typed patch. Reject it first to prove memory is unchanged; repeat and approve to create an event. |
+| 1:58–2:32 | Open **Evaluation**. Compare P@5, Recall@20/100, nDCG, and p95. Explain the small authored scope, the separate synthetic result, weighted fusion vs RRF, and the reranker tradeoff. |
 | 2:32–2:55 | Open the stored run or architecture, and point to one test proving that memory survives restart or login and one that checks the PostgreSQL cosine path. |
 
-**Close.** “The agent proposes preference changes. The ranking engine applies them after approval and shows the evidence behind each decision.”
+**Close.** “The agent proposes preference changes. The candidate controls memory, and every ranking decision is inspectable, challengeable, and replayable.”
 
 ## Interview notes
 

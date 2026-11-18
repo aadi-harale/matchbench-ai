@@ -69,15 +69,23 @@ export type Run = {
 export type Bootstrap = { identity: Identity; profile: Profile; memory: MemoryResponse; run: Run };
 export type CompareState = { status: string; rank: number | null; skill_coverage: number | null; checks: Check[] };
 export type Comparison = { before: CompareState; after: CompareState; corpus_size: number };
+export type ReplayResult = {
+  run_id: string; exact: boolean; same_order: boolean; algorithm: string; query: string;
+  profile_version: number; preference_version: number; stored_order: string[]; replayed_order: string[];
+  timing: { total_ms: number };
+};
 type Percentiles = { p50: number; p95: number };
 export type Metric = {
-  name: string; algorithm: string; ndcg_at_10: number; precision_at_5: number; recall_at_10: number; mrr: number;
+  name: string; algorithm: string; ndcg_at_10: number; precision_at_5: number; recall_at_10: number;
+  recall_at_20: number; candidate_recall_at_100: number; mrr: number;
   latency: { retrieval_ms: Percentiles; rerank_ms: Percentiles; total_ms: Percentiles }; mean_reranker_pairs: number;
 };
 export type Report = {
   jobs: number; indexed_vectors: number; judgments: number; queries: number; heldout_topics: number; index_bytes: number;
   generated_at: string; device: string; database: string; alpha: number; timing_scope: string; scope: string;
   ranking: Metric[]; rerank_depths: (Metric & { depth: number })[];
+  fusion_experiment: { weighted_fusion_alpha: number; rrf_k: number;
+    weighted_hybrid: Metric; rrf: Omit<Metric, "algorithm" | "latency" | "mean_reranker_pairs"> };
   paired_cluster_bootstrap_ndcg_delta: [number, number];
   contracts: { explanation_cases: number; grounded: number; missing_skill_correct: number; consistent: number;
     unsupported_claim_rate: number; local_preference_cases: number; local_preferences_correct: number;

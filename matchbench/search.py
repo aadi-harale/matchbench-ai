@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from .db import Decision, JobEmbedding, JobVersion, Run, User
 from .ingest import revisions
 from .models import EMBED_ID, RERANK_ID, Models
-from .ranking import Corpus, rank
+from .ranking import DEFAULT_CROSS_WEIGHT, Corpus, rank
 from .schemas import Counterfactual, Job, SearchRequest
 from .state import apply_changes, preference_at, profile_at
 
@@ -68,7 +68,8 @@ def execute(
     visible = [entry["job"]["id"] for entry in result["matches"]]
     context = {
         "search": search.model_dump(mode="json"), "at": at.isoformat(), "job_revisions": [row.id for row in rows],
-        "weights": {"vector": alpha, "cross_encoder": 0.6, "skill_coverage": 0.12, "preferences": 0.18},
+        "weights": {"vector": alpha, "cross_encoder": DEFAULT_CROSS_WEIGHT,
+                    "skill_coverage": 0.12, "preferences": 0.18},
         "rerank_depth": 20, "embedding_model": EMBED_ID, "reranker_model": RERANK_ID,
         "visible": visible, **{key: value for key, value in result.items() if key not in {"matches", "excluded"}},
     }
@@ -89,6 +90,72 @@ def replay(session: Session, run: Run) -> dict[str, Any]:
             "preference_version": run.preference_version,
             "matches": [row.result for row in entries if row.job_id in visible],
             "excluded": [row.result for row in entries if row.result["status"] != "pass"]}
+
+
+def replay_exact(
+    session: Session, user: User, run: Run, models: Models, timeout: float,
+) -> dict[str, Any]:
+    """Recompute a stored run only when its exact model configuration is installed."""
+    context = run.context
+    algorithm = context["algorithm"]
+    if context.get("embedding_model") != EMBED_ID:
+        raise RuntimeError(
+            f"Exact replay unavailable because embedding model revision {context.get('embedding_model')} is not installed."
+        )
+    if context.get("reranker_model") != RERANK_ID:
+        raise RuntimeError(
+            f"Exact replay unavailable because reranker revision {context.get('reranker_model')} is not installed."
+        )
+    if algorithm not in {"keyword", "bm25"} and not models.available("embed"):
+        raise RuntimeError(f"Exact replay unavailable because model revision {EMBED_ID} is not installed.")
+    if algorithm in {"hybrid_rerank", "personalized"} and not models.available("rank"):
+        raise RuntimeError(f"Exact replay unavailable because model revision {RERANK_ID} is not installed.")
+
+    _, profile = profile_at(session, user, run.profile_version)
+    _, preferences = preference_at(session, user, run.preference_version)
+    revision_ids = context["job_revisions"]
+    rows = revisions(session, revision_ids)
+    if len(rows) != len(revision_ids):
+        raise RuntimeError("Exact replay unavailable because part of the recorded job snapshot is missing.")
+    search = SearchRequest.model_validate(context["search"] | {"algorithm": algorithm})
+    result = rank(
+        corpus_for(tuple(Job.model_validate(row.data).model_dump_json() for row in rows)),
+        search,
+        profile,
+        preferences,
+        datetime.fromisoformat(context["at"]),
+        models,
+        cosine_resolver(session, rows),
+        alpha=context["weights"]["vector"],
+        depth=context["rerank_depth"],
+        timeout=timeout,
+        cross_weight=context["weights"]["cross_encoder"],
+    )
+    if result["algorithm"] != algorithm or result["warnings"]:
+        raise RuntimeError("Exact replay unavailable because a recorded ranking dependency degraded.")
+    stored = list(session.scalars(select(Decision).where(
+        Decision.run_id == run.id
+    ).order_by(Decision.position)))
+    stored_order = [row.job_id for row in stored if row.result["rank"] is not None]
+    replayed_order = [row["job"]["id"] for row in result["ranked"]]
+    visible = set(context["visible"])
+    return {
+        "run_id": run.id,
+        "exact": stored_order == replayed_order,
+        "same_order": stored_order == replayed_order,
+        "algorithm": result["algorithm"],
+        "query": search.query,
+        "profile_version": run.profile_version,
+        "preference_version": run.preference_version,
+        "job_revisions": revision_ids,
+        "embedding_model": context["embedding_model"],
+        "reranker_model": context["reranker_model"],
+        "stored_order": stored_order,
+        "replayed_order": replayed_order,
+        "matches": [row for row in result["ranked"] if row["job"]["id"] in visible],
+        "excluded": result["excluded"],
+        "timing": result["timing"],
+    }
 
 
 def counterfactual(
@@ -130,6 +197,7 @@ def counterfactual(
         search, profile, changed, datetime.fromisoformat(run.context["at"]),
         models, cosine_resolver(session, rows), alpha=run.context["weights"]["vector"],
         depth=run.context["rerank_depth"], timeout=timeout, hypothetical=hypothetical,
+        cross_weight=run.context["weights"]["cross_encoder"],
     )
     if result["algorithm"] != run.context["algorithm"]:
         raise RuntimeError("This run requires a model that is temporarily unavailable. Retry the comparison.")

@@ -1,10 +1,32 @@
 # MatchBench AI
 
+[![MatchBench checks](https://github.com/aadi-harale/matchbench-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/aadi-harale/matchbench-ai/actions/workflows/ci.yml)
+
+**An evidence-grounded job-matching system that lets a candidate inspect, challenge, and exactly replay every recommendation.**
+
+[Try the live recruiter demo](https://matchbench-ai-aadi.vercel.app) · [Read the one-page recruiter brief](RECRUITER.md) · [Inspect the measured artifacts](data/benchmark.json)
+
+Python · FastAPI · PostgreSQL/pgvector · BM25 · MiniLM embeddings · cross-encoder · React · TypeScript · Docker · GitHub Actions
+
+| Measured result | Scope |
+| --- | --- |
+| **0.624 Precision@5** | preference-aware ranker, 50 held-out authored queries / 42 illustrative jobs |
+| **0.956 candidate Recall@100** | dense retrieval, 100 held-out synthetic queries / 300 synthetic jobs |
+| **72/72 correct preference intents** | deterministic typed-agent fallback; hosted-model result is not claimed |
+
+![MatchBench desktop recruiter demo](docs/screenshots/matchbench-desktop.png)
+
+<details><summary>Mobile view</summary>
+
+![MatchBench mobile recruiter demo](docs/screenshots/matchbench-mobile.png)
+
+</details>
+
 ## Why this project exists
 
 MatchBench is an engineering benchmark for job retrieval, ranking, personalization, explainability, preference memory, and reliable AI-agent behavior. A candidate can see which roles they can pursue and the evidence behind each recommendation. An engineer can replay the same decision, change one assumption, and reproduce the ranking benchmark.
 
-**[Open the recruiter demo](https://matchbench-ai-aadi.vercel.app)** and select **Inspect a rejected match**. The demo sets aside a semantically similar role that requires five years of experience. Open **Decision trace** for the eligibility checks and scores. Then select the Hyderabad role and use **What if?** to recompute its rank if Hyderabad were acceptable.
+Select **Inspect a rejected match**. The demo sets aside a semantically similar role that requires five years of experience. Open **Decision trace** for the eligibility checks and scores, then run **Exact replay** to recompute the frozen decision. Select the Hyderabad role and use **What if?** to change one assumption without changing memory.
 
 ### What the demo shows
 
@@ -23,20 +45,22 @@ The 42 postings are illustrative. The demo profile uses public project evidence,
 
 Fifty held-out queries across ten intent families were evaluated on the same 42-job corpus. A separate ten-query development split selected the fusion weight. A posted grade of 2 or 3 counts as relevant for binary metrics.
 
-| Method | Precision@5 | Recall@10 | MRR | nDCG@10 | p95 ranking |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Keyword overlap | .440 | .655 | .896 | .682 | 0.6 ms |
-| BM25 | .488 | .718 | .938 | .725 | 0.8 ms |
-| MiniLM embeddings | .540 | .892 | .980 | .848 | 9.1 ms |
-| Hybrid | .548 | .881 | .960 | .832 | 8.3 ms |
-| Hybrid + cross-encoder | .564 | .860 | .962 | .826 | 136.5 ms |
-| Hybrid + cross-encoder + preferences | .624 | .894 | .964 | .849 | 133.7 ms |
+| Method | Precision@5 | Recall@10 | Recall@20 | MRR | nDCG@10 | p95 ranking |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Keyword overlap | .440 | .655 | .804 | .896 | .682 | 0.5 ms |
+| BM25 | .488 | .718 | .804 | .938 | .725 | 0.6 ms |
+| MiniLM embeddings | .540 | .892 | .981 | .980 | .848 | 8.0 ms |
+| Hybrid | .548 | .881 | .985 | .960 | .832 | 7.8 ms |
+| Hybrid + cross-encoder | .556 | .889 | .985 | .970 | .843 | 165.7 ms |
+| Hybrid + cross-encoder + preferences | .624 | .897 | .985 | .970 | .854 | 152.4 ms |
 
-On this fixture, preference-aware ranking found more relevant roles in the top five. The paired topic-bootstrap interval for the nDCG@10 difference versus embeddings crosses zero. The cross-encoder alone raised top-five precision relative to hybrid, reduced nDCG@10, and added latency. Embedding-only search remains available as a cheaper ranking option. These are local warm-model measurements, with cached query embeddings, on curated fixtures. See [ranking metrics](data/benchmark.json) and [label methodology](EVALUATION_PLAN.md).
+On this fixture, preference-aware ranking found more relevant roles in the top five. The paired topic-bootstrap interval for the nDCG@10 difference versus embeddings crosses zero. A development-only ablation selected a 20-result rerank depth and 0.2 cross-encoder blend: that improved nDCG over hybrid but added about 145 ms at p95. Tuned weighted fusion beat RRF (.832 vs .812 nDCG@10). These are warm local CPU measurements on authored fixtures, not product KPIs. See [ranking metrics](data/benchmark.json), [reranker ablation](data/reranker_ablation.json), and [label methodology](EVALUATION_PLAN.md).
+
+A second, clearly synthetic retrieval fixture contains 300 jobs, 20 development queries, and 100 held-out queries. Dense retrieval reached .956 candidate Recall@100; the reranker improved nDCG over hybrid (.439 vs .400) but reduced P@5 on this distribution (.410 vs .402 is a small increase, while both trail embeddings at .460). This result is kept to expose the current generalization limit. [Large benchmark](data/large_benchmark.json)
 
 In a separate generated load test, the index ingested **3,072 jobs**, reused every embedding on identical re-import, and re-embedded **64 of 128 updated jobs**. The 64 metadata changes kept their existing vectors. [Index load measurements](data/load_benchmark.json)
 
-The explanation contract passed **36 of 36** evidence and missing-skill checks. A local Qwen2.5 1.5B model produced **28 of 32** preference proposals that passed validation and **24 of 32** that matched the expected intent. The rule-based path matched 29 of these 32 narrow cases. The hosted preview uses the rule-based path and confirmation. [Agent evaluation](data/agent_benchmark.json)
+The explanation contract passed **36 of 36** evidence and missing-skill checks. The deterministic fallback passed schema and policy validation and matched the expected intent for **72 of 72** cases, including multiple simultaneous changes, clarification, protected-attribute, and no-store prompts. No hosted-model result is claimed because no provider was configured during this run. [Agent evaluation](data/agent_benchmark.json)
 
 ## How it works
 
@@ -61,9 +85,9 @@ flowchart LR
 
 - **Eligibility first.** Employment type, experience range, city and relocation, explicit exclusions, pay, graduation, authorization, availability, and expiration are evaluated independently. Unknown hard checks are shown for review. The diagnostic list can display raw similarity for excluded jobs.
 - **Candidate generation.** BM25S and the 384-dimensional MiniLM bi-encoder each produce up to 100 eligible hits. PostgreSQL computes exact cosine using pgvector. Local SQLite uses the dot product of the same normalized vectors. Each retained channel is min–max normalized, with zero contribution for an absent result and 1 for a tied constant channel. The development split sets `alpha` for `alpha × cosine + (1 − alpha) × BM25`.
-- **Ranking.** Rerank the first 20 hybrid candidates using a quantized MiniLM cross-encoder. Its normalized score contributes 60% of the rerank blend, followed by bounded skill and preference adjustments. Model revisions, component scores, checks, effective ranking method, and weights are stored with the run. Scores are ranking signals.
+- **Ranking.** Rerank the first 20 hybrid candidates using a quantized MiniLM cross-encoder. A development-only ablation selected its 20% blend weight, followed by bounded skill and preference adjustments. Model revisions, component scores, checks, effective ranking method, and weights are stored with the run. Scores are ranking signals.
 - **Evidence.** Only accepted excerpts supply skill evidence. Pending review appears under open questions. Missing skills are reported directly. If no result reaches the Daily Matches criteria, the screen says **No strong matches**.
-- **Counterfactuals.** Replay the recorded effective algorithm against the same query, job revisions, profile version, preference version, and evaluation time with one changed input. A hypothetical skill contributes to simulated coverage. The source evidence and saved memory stay as recorded.
+- **Replay and counterfactuals.** Exact replay requires the recorded model revisions and recomputes the frozen query, job revisions, profile, preferences, time, and weights. A counterfactual changes one input. A hypothetical skill contributes only to simulated coverage; source evidence and saved memory stay unchanged.
 
 ### SQL and state
 
@@ -108,6 +132,7 @@ The native path defaults to SQLite. Set `DATABASE_URL` to a PostgreSQL URL befor
 ```bash
 python -m matchbench.cli ingest data/jobs.json
 python -m matchbench.benchmark --output local-ranking.json
+python -m matchbench.large_benchmark --generate --output local-large.json
 python -m matchbench.load_benchmark --size 3072 --output local-load.json
 python -m matchbench.benchmark --contracts-only --output local-agent.json
 # With a configured model:
@@ -122,10 +147,13 @@ The ingest CLI accepts validated JSON arrays or CSV with pipe-delimited skill/lo
 | --- | --- |
 | `POST /api/search` | Execute filters, retrieve, rank, and save a match run |
 | `GET /api/runs/{id}` | Retrieve an owned run’s exact stored output and provenance |
+| `POST /api/runs/{id}/replay` | Recompute a frozen run and compare its order |
 | `POST /api/runs/{id}/counterfactual` | Recompute one hypothetical change |
 | `POST /api/profile/extract` | Preview PDF, DOCX or text extraction |
 | `GET /api/preferences` | Read saved preferences and events |
 | `POST /api/agent` and `POST /api/agent/{id}/confirm` | Interpret then confirm a preference |
+| `POST /api/agent/{id}/reject` | Reject a proposal without mutating memory |
+| `POST /api/demo/reset` | Replace the isolated demo session with a clean baseline |
 | `POST /api/feedback` | Record a reason and surface a reviewable suggestion |
 | `GET /api/evaluation` | Read actual generated benchmark artifacts |
 | `GET /api/account/export`, `DELETE /api/account` | Export and delete candidate data |
@@ -156,6 +184,6 @@ The public deployment runs in Vercel's Mumbai region and uses Supabase's Mumbai 
 
 ### Limits and next experiments
 
-Ranking judgments cover a small, authored corpus. The larger index benchmark uses generated records only and measures ingestion and runtime behavior. The current exact retrieval path reads the active corpus. Larger deployments would move selectivity-critical fields to indexed columns, measure filtered ANN recall, and batch index and reranker work. The demo uses per-process request limits and has no external usage or hiring-outcome evidence. For a real candidate pilot, evaluate a licensed index, independent judgments, and monitored deployment behavior.
+Ranking judgments cover a small, authored corpus. The 300-job relevance benchmark and 3,072-job load benchmark are synthetic, and neither represents hiring outcomes. The current exact retrieval path reads the active corpus; filtered HNSW recall has not been measured, so ANN is deliberately not claimed or enabled. Larger deployments would move selectivity-critical fields to indexed columns, measure filtered ANN recall, and batch index and reranker work. The demo uses per-process request limits and has no external usage evidence. For a real candidate pilot, use a licensed index, independent judgments, external rate limiting, and monitored deployment behavior.
 
-[2–3 minute demo and interview guide](DEMO.md) · [Résumé bullets](RESUME_BULLETS.md) · [Research](RESEARCH.md) · [Evaluation plan](EVALUATION_PLAN.md)
+[2–3 minute demo](DEMO.md) · [Interview guide](INTERVIEW_GUIDE.md) · [Test matrix](TEST_MATRIX.md) · [Security](SECURITY.md) · [Résumé bullets](RESUME_BULLETS.md) · [Research](RESEARCH.md) · [Evaluation plan](EVALUATION_PLAN.md)

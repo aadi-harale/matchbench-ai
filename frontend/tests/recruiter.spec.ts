@@ -19,9 +19,11 @@ test("recruiter can verify an exclusion and recompute a decision", async ({ page
   await expect(page.locator(".compare-grid")).toContainText("Eligible");
   await page.getByRole("button", { name: "Decision trace" }).click();
   await expect(page.getByText("Open stored run")).toBeVisible();
+  await page.getByRole("button", { name: "Replay exact run" }).click();
+  await expect(page.getByText("Exact replay verified", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "View benchmark" }).click();
   await expect(page.getByRole("heading", { name: "Ranking benchmark" })).toBeVisible();
-  await expect(page.getByRole("row").filter({ hasText: "Hybrid + personalization" })).toContainText("0.849");
+  await expect(page.getByRole("row").filter({ hasText: "Hybrid + personalization" })).toContainText("0.854");
   expect(failures).toEqual([]);
 });
 
@@ -52,6 +54,21 @@ test("theme choice is applied and remembered", async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem("matchbench-theme-v1"))).toBe(after);
   await page.reload();
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.theme)).toBe(after);
+});
+
+test("proposal rejection and demo reset leave a clean baseline", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Ranked results" })).toBeVisible();
+  await page.getByRole("navigation").getByRole("button", { name: "Preferences" }).click();
+  await page.getByRole("button", { name: "No frontend-heavy roles" }).click();
+  await page.getByRole("button", { name: "Interpret preference" }).click();
+  await page.getByRole("button", { name: "Reject" }).click();
+  await expect(page.getByText("Proposal rejected. Saved memory was not changed.")).toBeVisible();
+  await expect(page.getByRole("listitem").getByText("v1", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Demo session" }).click();
+  await page.getByRole("button", { name: "Reset demo" }).click();
+  await page.getByRole("navigation").getByRole("button", { name: "Preferences" }).click();
+  await expect(page.getByRole("listitem").getByText("v1", { exact: true })).toBeVisible();
 });
 
 for (const width of [320, 768, 1024, 1440]) {

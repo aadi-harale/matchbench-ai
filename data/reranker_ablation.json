@@ -1,0 +1,650 @@
+{
+  "generated_at": "2026-11-18T17:04:58.366304+00:00",
+  "dataset_hash": "e02d55ce5ddfcc5171537ee16d2bbedbca2373cddca07d4dd18cf48e772c9f52",
+  "judgments_hash": "33419ec9e0c552f548aa2d153364c632c751d8273e33d696e19ea6584ad5f709",
+  "development_queries": 10,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:onnx/model_quint8_avx2.onnx",
+  "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2@233902d25c440f23af6f7d6e94d2946bac0bee0a:onnx/model_quint8_avx2.onnx",
+  "experiments": [
+    {
+      "split": "development",
+      "depth": 10,
+      "cross_encoder_weight": 0.2,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.54,
+      "recall_at_10": 0.9,
+      "recall_at_20": 0.975,
+      "mrr": 0.9,
+      "ndcg_at_10": 0.773783,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.113,
+          "p95": 0.132
+        },
+        "retrieval_ms": {
+          "p50": 7.172,
+          "p95": 7.718
+        },
+        "rerank_ms": {
+          "p50": 62.735,
+          "p95": 69.93
+        },
+        "total_ms": {
+          "p50": 71.289,
+          "p95": 78.482
+        }
+      },
+      "mean_reranker_pairs": 10
+    },
+    {
+      "split": "development",
+      "depth": 10,
+      "cross_encoder_weight": 0.4,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.9,
+      "recall_at_20": 0.975,
+      "mrr": 0.85,
+      "ndcg_at_10": 0.756445,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.117,
+          "p95": 0.149
+        },
+        "retrieval_ms": {
+          "p50": 6.894,
+          "p95": 7.655
+        },
+        "rerank_ms": {
+          "p50": 64.646,
+          "p95": 69.286
+        },
+        "total_ms": {
+          "p50": 72.536,
+          "p95": 96.904
+        }
+      },
+      "mean_reranker_pairs": 10
+    },
+    {
+      "split": "development",
+      "depth": 10,
+      "cross_encoder_weight": 0.6,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.9,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.741763,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.11,
+          "p95": 0.152
+        },
+        "retrieval_ms": {
+          "p50": 6.558,
+          "p95": 6.868
+        },
+        "rerank_ms": {
+          "p50": 61.716,
+          "p95": 66.723
+        },
+        "total_ms": {
+          "p50": 69.362,
+          "p95": 74.362
+        }
+      },
+      "mean_reranker_pairs": 10
+    },
+    {
+      "split": "development",
+      "depth": 10,
+      "cross_encoder_weight": 0.8,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.9,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.745665,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.108,
+          "p95": 0.123
+        },
+        "retrieval_ms": {
+          "p50": 7.109,
+          "p95": 8.198
+        },
+        "rerank_ms": {
+          "p50": 64.006,
+          "p95": 66.948
+        },
+        "total_ms": {
+          "p50": 72.07,
+          "p95": 74.608
+        }
+      },
+      "mean_reranker_pairs": 10
+    },
+    {
+      "split": "development",
+      "depth": 10,
+      "cross_encoder_weight": 1.0,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.46,
+      "recall_at_10": 0.9,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.740425,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.119,
+          "p95": 0.144
+        },
+        "retrieval_ms": {
+          "p50": 7.195,
+          "p95": 8.693
+        },
+        "rerank_ms": {
+          "p50": 62.171,
+          "p95": 70.307
+        },
+        "total_ms": {
+          "p50": 71.232,
+          "p95": 79.945
+        }
+      },
+      "mean_reranker_pairs": 10
+    },
+    {
+      "split": "development",
+      "depth": 20,
+      "cross_encoder_weight": 0.2,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.56,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.9,
+      "ndcg_at_10": 0.785082,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.106,
+          "p95": 0.125
+        },
+        "retrieval_ms": {
+          "p50": 6.953,
+          "p95": 8.191
+        },
+        "rerank_ms": {
+          "p50": 123.161,
+          "p95": 127.861
+        },
+        "total_ms": {
+          "p50": 130.605,
+          "p95": 136.64
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "split": "development",
+      "depth": 20,
+      "cross_encoder_weight": 0.4,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.54,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.752266,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.104,
+          "p95": 0.115
+        },
+        "retrieval_ms": {
+          "p50": 6.666,
+          "p95": 6.958
+        },
+        "rerank_ms": {
+          "p50": 121.257,
+          "p95": 130.958
+        },
+        "total_ms": {
+          "p50": 128.692,
+          "p95": 138.636
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "split": "development",
+      "depth": 20,
+      "cross_encoder_weight": 0.6,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.754067,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.108,
+          "p95": 0.148
+        },
+        "retrieval_ms": {
+          "p50": 6.999,
+          "p95": 8.843
+        },
+        "rerank_ms": {
+          "p50": 125.789,
+          "p95": 131.211
+        },
+        "total_ms": {
+          "p50": 133.636,
+          "p95": 139.736
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "split": "development",
+      "depth": 20,
+      "cross_encoder_weight": 0.8,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.52,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.762537,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.109,
+          "p95": 0.133
+        },
+        "retrieval_ms": {
+          "p50": 6.857,
+          "p95": 7.2
+        },
+        "rerank_ms": {
+          "p50": 122.58,
+          "p95": 127.83
+        },
+        "total_ms": {
+          "p50": 130.431,
+          "p95": 135.794
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "split": "development",
+      "depth": 20,
+      "cross_encoder_weight": 1.0,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.44,
+      "recall_at_10": 0.85,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.740166,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.113,
+          "p95": 0.125
+        },
+        "retrieval_ms": {
+          "p50": 6.861,
+          "p95": 7.185
+        },
+        "rerank_ms": {
+          "p50": 124.272,
+          "p95": 134.361
+        },
+        "total_ms": {
+          "p50": 132.105,
+          "p95": 142.301
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "split": "development",
+      "depth": 50,
+      "cross_encoder_weight": 0.2,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.56,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.9,
+      "ndcg_at_10": 0.785082,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.116,
+          "p95": 0.136
+        },
+        "retrieval_ms": {
+          "p50": 6.981,
+          "p95": 8.123
+        },
+        "rerank_ms": {
+          "p50": 227.089,
+          "p95": 243.127
+        },
+        "total_ms": {
+          "p50": 235.391,
+          "p95": 251.19
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 50,
+      "cross_encoder_weight": 0.4,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.54,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.752266,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.109,
+          "p95": 0.128
+        },
+        "retrieval_ms": {
+          "p50": 6.92,
+          "p95": 7.538
+        },
+        "rerank_ms": {
+          "p50": 225.41,
+          "p95": 247.355
+        },
+        "total_ms": {
+          "p50": 233.365,
+          "p95": 255.536
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 50,
+      "cross_encoder_weight": 0.6,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.754067,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.111,
+          "p95": 0.129
+        },
+        "retrieval_ms": {
+          "p50": 7.087,
+          "p95": 7.779
+        },
+        "rerank_ms": {
+          "p50": 222.569,
+          "p95": 242.081
+        },
+        "total_ms": {
+          "p50": 230.596,
+          "p95": 251.885
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 50,
+      "cross_encoder_weight": 0.8,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.52,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.762634,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.114,
+          "p95": 0.133
+        },
+        "retrieval_ms": {
+          "p50": 7.116,
+          "p95": 7.45
+        },
+        "rerank_ms": {
+          "p50": 225.431,
+          "p95": 239.202
+        },
+        "total_ms": {
+          "p50": 233.728,
+          "p95": 247.007
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 50,
+      "cross_encoder_weight": 1.0,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.44,
+      "recall_at_10": 0.85,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.732099,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.117,
+          "p95": 0.175
+        },
+        "retrieval_ms": {
+          "p50": 7.186,
+          "p95": 7.728
+        },
+        "rerank_ms": {
+          "p50": 235.761,
+          "p95": 247.507
+        },
+        "total_ms": {
+          "p50": 243.678,
+          "p95": 256.12
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 100,
+      "cross_encoder_weight": 0.2,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.56,
+      "recall_at_10": 0.925,
+      "recall_at_20": 0.975,
+      "mrr": 0.9,
+      "ndcg_at_10": 0.785082,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.122,
+          "p95": 0.179
+        },
+        "retrieval_ms": {
+          "p50": 7.529,
+          "p95": 9.836
+        },
+        "rerank_ms": {
+          "p50": 230.117,
+          "p95": 247.762
+        },
+        "total_ms": {
+          "p50": 240.247,
+          "p95": 257.031
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 100,
+      "cross_encoder_weight": 0.4,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.54,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.752266,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.103,
+          "p95": 0.154
+        },
+        "retrieval_ms": {
+          "p50": 6.861,
+          "p95": 7.212
+        },
+        "rerank_ms": {
+          "p50": 224.038,
+          "p95": 253.728
+        },
+        "total_ms": {
+          "p50": 231.48,
+          "p95": 261.661
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 100,
+      "cross_encoder_weight": 0.6,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.5,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.754067,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.113,
+          "p95": 0.16
+        },
+        "retrieval_ms": {
+          "p50": 6.828,
+          "p95": 8.215
+        },
+        "rerank_ms": {
+          "p50": 223.79,
+          "p95": 248.812
+        },
+        "total_ms": {
+          "p50": 231.509,
+          "p95": 256.78
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 100,
+      "cross_encoder_weight": 0.8,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.52,
+      "recall_at_10": 0.925,
+      "recall_at_20": 1.0,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.762634,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.104,
+          "p95": 0.125
+        },
+        "retrieval_ms": {
+          "p50": 6.728,
+          "p95": 7.41
+        },
+        "rerank_ms": {
+          "p50": 225.754,
+          "p95": 238.425
+        },
+        "total_ms": {
+          "p50": 233.619,
+          "p95": 246.135
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "split": "development",
+      "depth": 100,
+      "cross_encoder_weight": 1.0,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.44,
+      "recall_at_10": 0.85,
+      "recall_at_20": 0.975,
+      "mrr": 0.8,
+      "ndcg_at_10": 0.732099,
+      "candidate_recall_at_100": 1.0,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.11,
+          "p95": 0.137
+        },
+        "retrieval_ms": {
+          "p50": 6.835,
+          "p95": 8.755
+        },
+        "rerank_ms": {
+          "p50": 224.915,
+          "p95": 234.303
+        },
+        "total_ms": {
+          "p50": 232.634,
+          "p95": 243.687
+        }
+      },
+      "mean_reranker_pairs": 39
+    }
+  ]
+}

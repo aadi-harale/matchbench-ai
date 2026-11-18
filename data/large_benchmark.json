@@ -1,0 +1,198 @@
+{
+  "scope": "Deterministic synthetic retrieval fixture. No real openings, users, or hiring outcomes.",
+  "generated_at": "2026-11-18T17:09:10.316825+00:00",
+  "jobs": 300,
+  "development_queries": 20,
+  "heldout_queries": 100,
+  "topics": 12,
+  "dataset_hash": "f0b023d1353e22e45dac88d5b4cba5131d439f22b316f55a6f9f09eed93d3363",
+  "queries_hash": "cc247de132293a52d66b97e55807ed6db18825fb02849afb0b40ee357267205c",
+  "judgments_hash": "94bfd5014d3fd85fa05a6e4c9f61c4041eb0cfcd7de3a2928bd6968df35e5244",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:onnx/model_quint8_avx2.onnx",
+  "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2@233902d25c440f23af6f7d6e94d2946bac0bee0a:onnx/model_quint8_avx2.onnx",
+  "cross_encoder_weight": 0.2,
+  "alpha": 0.75,
+  "validation": [
+    {
+      "alpha": 0.25,
+      "ndcg_at_10": 0.29990044800926
+    },
+    {
+      "alpha": 0.5,
+      "ndcg_at_10": 0.3917771038828593
+    },
+    {
+      "alpha": 0.75,
+      "ndcg_at_10": 0.4833608468388576
+    }
+  ],
+  "ranking": [
+    {
+      "algorithm": "keyword",
+      "precision_at_5": 0.48,
+      "recall_at_10": 0.3875,
+      "recall_at_20": 0.475,
+      "mrr": 0.488971,
+      "ndcg_at_10": 0.476863,
+      "candidate_recall_at_100": 0.7025,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.255,
+          "p95": 0.532
+        },
+        "rerank_ms": {
+          "p50": 0.0,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 1.461,
+          "p95": 2.64
+        }
+      }
+    },
+    {
+      "algorithm": "bm25",
+      "precision_at_5": 0.22,
+      "recall_at_10": 0.233333,
+      "recall_at_20": 0.484167,
+      "mrr": 0.261341,
+      "ndcg_at_10": 0.231248,
+      "candidate_recall_at_100": 0.641667,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.133,
+          "p95": 0.33
+        },
+        "rerank_ms": {
+          "p50": 0.0,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 1.379,
+          "p95": 2.562
+        }
+      }
+    },
+    {
+      "algorithm": "embedding",
+      "precision_at_5": 0.46,
+      "recall_at_10": 0.3975,
+      "recall_at_20": 0.7075,
+      "mrr": 0.547408,
+      "ndcg_at_10": 0.445871,
+      "candidate_recall_at_100": 0.955833,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.604,
+          "p95": 0.78
+        },
+        "rerank_ms": {
+          "p50": 0.0,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 2.348,
+          "p95": 2.9
+        }
+      }
+    },
+    {
+      "algorithm": "hybrid",
+      "precision_at_5": 0.402,
+      "recall_at_10": 0.3775,
+      "recall_at_20": 0.705,
+      "mrr": 0.481009,
+      "ndcg_at_10": 0.400334,
+      "candidate_recall_at_100": 0.95,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.784,
+          "p95": 1.419
+        },
+        "rerank_ms": {
+          "p50": 0.001,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 2.917,
+          "p95": 5.834
+        }
+      }
+    },
+    {
+      "algorithm": "hybrid_rerank",
+      "precision_at_5": 0.41,
+      "recall_at_10": 0.38,
+      "recall_at_20": 0.705,
+      "mrr": 0.486015,
+      "ndcg_at_10": 0.439164,
+      "candidate_recall_at_100": 0.95,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.851,
+          "p95": 1.312
+        },
+        "rerank_ms": {
+          "p50": 137.588,
+          "p95": 176.734
+        },
+        "total_ms": {
+          "p50": 141.223,
+          "p95": 180.036
+        }
+      }
+    },
+    {
+      "algorithm": "personalized",
+      "precision_at_5": 0.366,
+      "recall_at_10": 0.373333,
+      "recall_at_20": 0.705,
+      "mrr": 0.449157,
+      "ndcg_at_10": 0.41678,
+      "candidate_recall_at_100": 0.959167,
+      "latency": {
+        "retrieval_ms": {
+          "p50": 0.961,
+          "p95": 1.561
+        },
+        "rerank_ms": {
+          "p50": 149.012,
+          "p95": 187.254
+        },
+        "total_ms": {
+          "p50": 153.665,
+          "p95": 191.305
+        }
+      }
+    }
+  ],
+  "rrf": {
+    "k": 60,
+    "validation": [
+      {
+        "k": 10,
+        "ndcg_at_10": 0.3737011988956847
+      },
+      {
+        "k": 30,
+        "ndcg_at_10": 0.3826508176991023
+      },
+      {
+        "k": 60,
+        "ndcg_at_10": 0.3856394577281259
+      },
+      {
+        "k": 100,
+        "ndcg_at_10": 0.3837779859604082
+      }
+    ],
+    "precision_at_5": 0.346,
+    "recall_at_10": 0.343333,
+    "recall_at_20": 0.626667,
+    "mrr": 0.41095,
+    "ndcg_at_10": 0.356543,
+    "candidate_recall_at_100": 0.931667
+  },
+  "elapsed_seconds": 30.944,
+  "timing_scope": "Warm local CPU models and cached query vectors; in-process exact cosine."
+}

@@ -17,6 +17,7 @@ TOKEN = re.compile(r"(?u)[a-z0-9][a-z0-9+#.\-]*")
 STOP = set("a an and as at at least about by for from i in into it of on or the to with working".split())
 ALIASES = {"bangalore": "bengaluru", "gurgaon": "gurugram"}
 Cosines = Callable[[list[float]], dict[str, float]]
+DEFAULT_CROSS_WEIGHT = 0.2
 
 
 def tokens(text: str) -> list[str]:
@@ -181,7 +182,7 @@ class Corpus:
 def rank(
     corpus: Corpus, search: SearchRequest, profile: Profile, preferences: Preferences, at: datetime,
     models: Models, cosines: Cosines, *, alpha: float = 0.5, depth: int = 20, timeout: float = 2.5,
-    hypothetical: set[str] | None = None,
+    hypothetical: set[str] | None = None, cross_weight: float = DEFAULT_CROSS_WEIGHT,
 ) -> dict[str, Any]:
     start = perf_counter()
     states = {key: eligibility(job, profile, preferences, search, at) for key, job in corpus.jobs.items()}
@@ -261,7 +262,7 @@ def rank(
     for key in ordered:
         entry = row(key, base[key])
         if key in cross_normal:
-            entry["scores"]["final"] = 0.6 * cross_normal[key] + 0.4 * base[key]
+            entry["scores"]["final"] = cross_weight * cross_normal[key] + (1 - cross_weight) * base[key]
         if mode == Algorithm.personalized:
             entry["scores"]["final"] = (
                 0.70 * entry["scores"]["final"] + 0.12 * entry["scores"]["skill_coverage"]

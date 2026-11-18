@@ -28,15 +28,25 @@ export default function Evaluation({ report }: { report: Report | null }) {
       </ul>
       <div className="table-scroll"><table className="metrics-table">
         <caption className="sr-only">Held-out ranking quality and latency</caption>
-        <thead><tr><th>Method</th><th>P@5</th><th>R@10</th><th>MRR</th><th>nDCG@10</th><th>p50 total</th><th>p95 total</th></tr></thead>
+        <thead><tr><th>Method</th><th>P@5</th><th>R@10</th><th>R@20</th><th>Candidate R@100</th><th>MRR</th><th>nDCG@10</th><th>p50 total</th><th>p95 total</th></tr></thead>
         <tbody>{report.ranking.map(metric => <tr key={metric.algorithm}>
           <th scope="row">{metric.name}</th><td>{decimal(metric.precision_at_5)}</td><td>{decimal(metric.recall_at_10)}</td>
+          <td>{decimal(metric.recall_at_20)}</td><td>{decimal(metric.candidate_recall_at_100)}</td>
           <td>{decimal(metric.mrr)}</td><td>{decimal(metric.ndcg_at_10)}</td>
           <td>{metric.latency.total_ms.p50.toFixed(1)} ms</td><td>{metric.latency.total_ms.p95.toFixed(1)} ms</td>
         </tr>)}</tbody>
       </table></div>
       <p className="fine-print">{report.scope} Precision, recall and MRR treat grades 2–3 as relevant. Paired topic-bootstrap 95% interval for personalized minus embeddings nDCG@10: {disclaimer}.</p>
       <p className="fine-print">{report.timing_scope} {report.device} / {report.database}. Vector fusion weight {report.alpha}. {report.indexed_vectors} job embeddings.</p>
+    </section>
+    <section className="surface page-section">
+      <h3>Fusion decision</h3>
+      <p>Weighted fusion stayed in production because it beat tuned reciprocal-rank fusion on the held-out set.</p>
+      <div className="bench-metadata">
+        <span><strong>{decimal(report.fusion_experiment.weighted_hybrid.ndcg_at_10)}</strong> weighted nDCG@10</span>
+        <span><strong>{decimal(report.fusion_experiment.rrf.ndcg_at_10)}</strong> RRF nDCG@10</span>
+        <span><strong>{report.fusion_experiment.rrf_k}</strong> selected RRF k</span>
+      </div>
     </section>
     <section className="surface page-section">
       <h3 className="inline-heading"><GitBranch size={18} aria-hidden /> Cross-encoder cost</h3>

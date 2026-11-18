@@ -246,11 +246,18 @@ function AccountPanel({ identity, close, start, clear }: {
     catch (problem) { setNotice(readableError(problem)); }
     finally { setWorking(false); }
   }
+  async function resetDemo() {
+    setWorking(true); setNotice("");
+    try { await start(await api<Identity>("/api/demo/reset", "POST")); }
+    catch (problem) { setNotice(readableError(problem)); }
+    finally { setWorking(false); }
+  }
   function submit(event: FormEvent) { event.preventDefault(); void auth(creating ? "register" : "login"); }
   return <dialog ref={dialog} aria-labelledby="account-heading" onCancel={close} className="account-dialog">
     <div className="section-top tight"><h2 id="account-heading">Your workspace</h2><button type="button" className="secondary" onClick={close}>Close</button></div>
     {identity && <section className="account-info"><p>{identity.demo ? "You are using an isolated demo session." : identity.email}</p>
       <div className="actions"><a className="text-link" href="/api/account/export" download="matchbench-account.json">Export data</a>
+        {identity.demo && <button type="button" className="secondary" disabled={working} onClick={() => { void resetDemo(); }}>Reset demo</button>}
         <button type="button" className="secondary" disabled={working} onClick={() => { void closeSession(false); }}>Sign out</button>
         <button type="button" className="plain danger" onClick={() => setConfirming(true)}>Delete data</button></div>
       {confirming && <div className="notice error"><p>Delete this workspace, including saved evidence and matches?</p>

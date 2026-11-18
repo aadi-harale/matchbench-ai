@@ -20,7 +20,10 @@ class Proposal(StrictModel):
 
 
 class Intent(StrictModel):
-    action: Literal["exclude_role", "prefer_role", "less_role", "allow_role", "allow_city", "paid_only", "minimum", "ask"]
+    action: Literal[
+        "exclude_role", "prefer_role", "less_role", "allow_role", "allow_city", "exclude_city",
+        "prefer_work_mode", "relocation", "exclude_company", "prefer_skill", "paid_only", "minimum", "ask",
+    ]
     value: str
 
     def to_proposal(self, message: str) -> Proposal:
@@ -38,7 +41,7 @@ class Intent(StrictModel):
                 raise ValueError("The proposed role was not mentioned")
         if self.action == "exclude_role" and not re.search(r"\b(no|exclude|avoid|don't want|never)\b", source):
             raise ValueError("Hard exclusion requires an explicit request")
-        if self.action == "allow_city":
+        if self.action in {"allow_city", "exclude_city"}:
             aliases = {"bengaluru": ("bangalore", "bengaluru"), "gurugram": ("gurgaon", "gurugram")}
             if not value or not any(name in source for name in aliases.get(city(value), (value,))):
                 raise ValueError("The proposed city was not mentioned")
@@ -47,13 +50,21 @@ class Intent(StrictModel):
                 PreferencePatch(field="denied_roles", operation="remove", value=value),
                 PreferencePatch(field="less_roles", operation="remove", value=value),
             ], question=None)
-        mapping = {"exclude_role": "denied_roles", "prefer_role": "preferred_roles", "less_role": "less_roles",
-                   "allow_city": "locations"}
+        mapping = {
+            "exclude_role": "denied_roles", "prefer_role": "preferred_roles", "less_role": "less_roles",
+            "allow_city": "locations", "exclude_city": "excluded_locations",
+            "prefer_work_mode": "preferred_work_modes", "exclude_company": "denied_companies",
+            "prefer_skill": "preferred_skills",
+        }
         if self.action in mapping:
             patch = PreferencePatch.model_validate({"field": mapping[self.action], "operation": "add",
-                                                   "value": value.title() if self.action == "allow_city" else value})
+                                                   "value": value.title() if self.action in {
+                                                       "allow_city", "exclude_city", "exclude_company",
+                                                   } else value})
         elif self.action == "paid_only":
             patch = PreferencePatch(field="paid_only", operation="set", value=True)
+        elif self.action == "relocation":
+            patch = PreferencePatch(field="allow_relocation", operation="set", value=value in {"yes", "true"})
         else:
             patch = PreferencePatch(field="minimum_stipend", operation="set", value=int(value))
         return Proposal(changes=[patch], question=None)
@@ -63,7 +74,10 @@ SCHEMA_PROMPT = (
     'Classify the user\'s job preference. Output JSON with action and value. '
     'Only use exclude_role for an explicit ban, less_role for fewer results, prefer_role for more, '
     'allow_role for reversing an exclusion, allow_city for adding a location, paid_only for no unpaid jobs, '
-    'minimum for an INR amount (30k is 30000). Use ask for conditional or out-of-domain requests. '
+    'exclude_city for a rejected location, prefer_work_mode for remote/hybrid/on-site, relocation for yes/no, '
+    'exclude_company for an explicitly named employer, prefer_skill for an explicitly prioritized technology, '
+    'minimum for an INR amount (30k is 30000). Use ask for conditional, temporary, do-not-store, protected-attribute, '
+    'interest-without-preference, multi-change, or out-of-domain requests. '
     'Use the role or city named by the user. Allowed roles include frontend, backend, search, data and platform.'
 )
 SCHEMA_EXAMPLES = [
@@ -78,29 +92,70 @@ SCHEMA_EXAMPLES = [
 
 def local_proposal(message: str) -> Proposal:
     text = message.casefold().replace("’", "'")
-    if re.search(r"\b(if|unless|only when|except when)\b", text):
+    if re.search(r"\b(if|unless|only when|except when|for now|temporar(?:y|ily)|this search only)\b", text):
         return Proposal(changes=[], question="What unconditional preference should this search use?")
-    if re.search(r"\b(no|don't want|exclude|avoid)\b.*front.?end", text):
-        change = PreferencePatch(field="denied_roles", operation="add", value="frontend")
-    elif re.search(r"\b(less|fewer)\b.*front.?end", text):
-        change = PreferencePatch(field="less_roles", operation="add", value="frontend")
-    elif re.search(r"\b(allow|show|include|undo)\b.*front.?end", text):
-        return Proposal(changes=[
-            PreferencePatch(field="denied_roles", operation="remove", value="frontend"),
-            PreferencePatch(field="less_roles", operation="remove", value="frontend"),
-        ], question=None)
-    elif re.search(r"\b(no|don't want|exclude|avoid)\b.*unpaid|paid (internships|roles) only", text):
-        change = PreferencePatch(field="paid_only", operation="set", value=True)
-    elif match := re.search(r"(?:at least|minimum|above)\s*(?:₹\s*|inr\s*)?([\d,]+)(k)?\b", text):
-        value = int(match[1].replace(",", "")) * (1000 if match[2] else 1)
-        change = PreferencePatch(field="minimum_stipend", operation="set", value=value)
-    elif match := re.search(r"(?:relocate to|allow|add)\s+(bangalore|bengaluru|hyderabad|gurugram|gurgaon|pune)\b", text):
-        change = PreferencePatch(field="locations", operation="add", value=match[1].capitalize())
-    elif re.search(r"\b(prefer|more)\b.*backend", text):
-        change = PreferencePatch(field="preferred_roles", operation="add", value="backend")
-    else:
+    if re.search(r"\b(don't|do not)\s+(save|store|remember)\b", text):
+        return Proposal(changes=[], question="Should I apply this only to the current search without saving it?")
+    if re.search(r"\b(gender|religion|religious|age|marital|married|caste|ethnicity)\b", text):
+        return Proposal(changes=[], question="Protected personal attributes are not ranking preferences.")
+    if re.search(r"\b(interested in|learning|want to learn|curious about)\b", text):
+        return Proposal(changes=[], question="Should I prioritize jobs using that technology, without treating it as experience?")
+
+    changes: list[PreferencePatch] = []
+    roles = "frontend|backend|search|platform|data|evaluation|mobile|security|research|operations|writing"
+    if match := re.search(rf"\b({roles})\b", text.replace("front-end", "frontend").replace("back-end", "backend")):
+        role = match[1]
+        if re.search(r"\b(no|don't want|exclude|avoid|never)\b", text):
+            changes.append(PreferencePatch(field="denied_roles", operation="add", value=role))
+        elif re.search(r"\b(less|fewer)\b", text):
+            changes.append(PreferencePatch(field="less_roles", operation="add", value=role))
+        elif re.search(r"\b(undo)\b", text) or (
+            re.search(r"\b(allow|show|include|okay again|ok again)\b", text) and "again" in text
+        ):
+            changes.extend([
+                PreferencePatch(field="denied_roles", operation="remove", value=role),
+                PreferencePatch(field="less_roles", operation="remove", value=role),
+            ])
+        elif re.search(r"\b(prefer|more|prioriti[sz]e|rank .*higher)\b", text):
+            changes.append(PreferencePatch(field="preferred_roles", operation="add", value=role))
+
+    if re.search(r"\b(no|don't want|exclude|avoid)\b.*unpaid|paid (internships|roles|jobs) only", text):
+        changes.append(PreferencePatch(field="paid_only", operation="set", value=True))
+    if match := re.search(r"(?:at least|minimum|above)\s*(?:is|to)?\s*(?:₹\s*|inr\s*)?([\d,]+)(k)?\b", text):
+        amount = int(match[1].replace(",", "")) * (1000 if match[2] else 1)
+        changes.append(PreferencePatch(field="minimum_stipend", operation="set", value=amount))
+
+    cities = "bangalore|bengaluru|hyderabad|gurugram|gurgaon|pune|mumbai|delhi|chennai"
+    if match := re.search(rf"\b({cities})\b", text):
+        location = match[1].title()
+        if re.search(r"\b(don't|do not|exclude|avoid|not in)\b", text):
+            changes.append(PreferencePatch(field="excluded_locations", operation="add", value=location))
+        elif re.search(r"\b(okay again|ok again|acceptable again)\b", text):
+            changes.append(PreferencePatch(field="excluded_locations", operation="remove", value=location))
+        elif re.search(r"\b(relocate to|allow|add|include|open to|accepted cities?)\b", text):
+            changes.append(PreferencePatch(field="locations", operation="add", value=location))
+
+    if re.search(r"\b(can|will|open to) relocate\b", text):
+        changes.append(PreferencePatch(field="allow_relocation", operation="set", value=True))
+    elif re.search(r"\b(can't|cannot|won't|not able to) relocate\b", text):
+        changes.append(PreferencePatch(field="allow_relocation", operation="set", value=False))
+
+    if match := re.search(r"\b(prefer|prioriti[sz]e|more)\b.*\b(remote|hybrid|on-site|onsite)\b", text):
+        mode = "on-site" if match[2] == "onsite" else match[2]
+        changes.append(PreferencePatch(field="preferred_work_modes", operation="add", value=mode))
+
+    if match := re.search(r"\b(?:don't show|do not show|exclude|avoid)\b.*\b(?:jobs|roles)\s+from\s+([a-z0-9][a-z0-9 &.-]{1,60})[.!]?$", text):
+        changes.append(PreferencePatch(field="denied_companies", operation="add", value=match[1].strip(" .").title()))
+
+    if match := re.search(r"\b(?:prefer|prioriti[sz]e)\b.*\b(kubernetes|redis|fastapi|python|postgresql|docker)\b", text):
+        changes.append(PreferencePatch(field="preferred_skills", operation="add", value=match[1].title()))
+
+    unique: dict[tuple[str, str, str], PreferencePatch] = {}
+    for change in changes:
+        unique[(change.field, change.operation, str(change.value).casefold())] = change
+    if not unique:
         return Proposal(changes=[], question="Name a role to include or exclude, accepted city, or monthly minimum pay.")
-    return Proposal(changes=[change], question=None)
+    return Proposal(changes=list(unique.values()), question=None)
 
 
 LOOKUP = {"type": "function", "function": {

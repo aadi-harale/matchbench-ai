@@ -8,6 +8,7 @@ from threading import Lock
 from time import perf_counter
 from typing import Annotated, Any
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 import jwt
 from fastapi import Depends, FastAPI, File, HTTPException, Request, Response, UploadFile
@@ -38,7 +39,7 @@ from .ingest import ingest, read_records
 from .models import Models
 from .resume import extract_document, parse_profile
 from .schemas import Counterfactual, FeedbackKind, PreferencePatch, Profile, SearchRequest, StrictModel
-from .search import counterfactual, execute, replay
+from .search import counterfactual, execute, replay, replay_exact
 from .security import COOKIE, RateLimits, decode, hasher, sign, verify
 from .state import (
     VersionConflict,
@@ -87,7 +88,15 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     limits = RateLimits()
     metrics: Counter[str] = Counter()
     durations: dict[str, float] = {}
+    duration_stats: dict[str, dict[str, float]] = {}
     metrics_lock = Lock()
+
+    def record_duration(name: str, value: float) -> None:
+        durations[name] = durations.get(name, 0.0) + value
+        summary = duration_stats.setdefault(name, {"count": 0, "total_ms": 0.0, "max_ms": 0.0})
+        summary["count"] += 1
+        summary["total_ms"] += value
+        summary["max_ms"] = max(summary["max_ms"], value)
 
     @asynccontextmanager
     async def lifespan(_):
@@ -114,6 +123,11 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     @app.middleware("http")
     async def observe(request: Request, call_next):
         started = perf_counter()
+        supplied_id = request.headers.get("x-request-id", "")
+        request_id = supplied_id if supplied_id and len(supplied_id) <= 80 and all(
+            character.isalnum() or character in "-_." for character in supplied_id
+        ) else uuid4().hex
+        request.state.request_id = request_id
         if request.url.path.startswith("/api/"):
             client = request.client.host if request.client else "local"
             restricted = {"/api/auth/login": 8, "/api/auth/register": 8, "/api/auth/demo": 30}
@@ -130,13 +144,14 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
             if size and size.isdigit() and int(size) > settings.max_upload_bytes + 65536:
                 return JSONResponse({"detail": "Request exceeds the upload limit."}, status_code=413)
         response = await call_next(request)
+        response.headers["X-Request-ID"] = request_id
         if request.url.path.startswith("/api/"):
             response.headers["Cache-Control"] = "no-store"
         route = request.scope.get("route")
         name = getattr(route, "path", "unknown")
         with metrics_lock:
             metrics[f"{name} {response.status_code} count"] += 1
-            durations[name] = durations.get(name, 0.0) + (perf_counter() - started) * 1000
+            record_duration(name, (perf_counter() - started) * 1000)
         return response
 
     @app.exception_handler(VersionConflict)
@@ -178,7 +193,11 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         with metrics_lock:
             for stage, value in result["timing"].items():
                 key = f"search/{result['algorithm']}/{stage}"
-                durations[key] = durations.get(key, 0.0) + value
+                record_duration(key, value)
+            metrics["search requests"] += 1
+            for warning in result["warnings"]:
+                fallback = "embedding_to_bm25" if "Embedding" in warning else "reranker_to_hybrid"
+                metrics[f"fallback/{fallback}"] += 1
         return result
 
     def owned_run(session: Session, user: User, run_id: str) -> Run:
@@ -204,7 +223,11 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     @app.get("/api/observability")
     def telemetry():
         with metrics_lock:
-            return {"api": dict(metrics), "duration_ms": durations.copy(),
+            summaries = {
+                key: value | {"average_ms": value["total_ms"] / value["count"]}
+                for key, value in duration_stats.items()
+            }
+            return {"api": dict(metrics), "duration_ms": durations.copy(), "latency": summaries,
                     "query_embedding_cache": models.query_vector.cache_info()._asdict()}
 
     @app.post("/api/auth/demo")
@@ -215,6 +238,19 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         seed_candidate(session, user)
         session.commit()
         return cookie(response, user)
+
+    @app.post("/api/demo/reset")
+    def reset_demo(response: Response, session: Session = Depends(db_session), user: User = Depends(get_user)):
+        if not user.demo:
+            raise HTTPException(403, "Reset is available only for demo sessions.")
+        session.delete(user)
+        session.flush()
+        replacement = User(demo=True)
+        session.add(replacement)
+        session.flush()
+        seed_candidate(session, replacement)
+        session.commit()
+        return cookie(response, replacement) | {"status": "reset"}
 
     @app.post("/api/bootstrap")
     def bootstrap(
@@ -342,6 +378,13 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         session.flush()
         session.add_all([ToolCall(run_id=draft.id, **call) for call in calls])
         session.commit()
+        with metrics_lock:
+            metrics[f"agent/provider/{provider}"] += 1
+            if "local rules" in provider:
+                metrics["agent/fallback/local_rules"] += 1
+            for call in calls:
+                metrics[f"agent/tool/{call['name']}/{call['status']}"] += 1
+                record_duration(f"agent/{call['name']}", call["elapsed_ms"])
         return {"id": draft.id, "proposal": proposal, "provider": provider, "tool_calls": calls, "usage": usage}
 
     @app.post("/api/agent/{draft_id}/confirm")
@@ -360,6 +403,18 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
         session.commit()
         return {"version": version, "preferences": updated}
 
+    @app.post("/api/agent/{draft_id}/reject")
+    def reject(draft_id: str, session: Session = Depends(db_session), user: User = Depends(get_user)):
+        draft = session.scalar(select(AgentRun).where(
+            AgentRun.id == draft_id, AgentRun.user_id == user.id
+        ).with_for_update())
+        if not draft or draft.status != "pending":
+            raise HTTPException(409, "This proposal is no longer pending.")
+        draft.status = "rejected"
+        session.add(ToolCall(run_id=draft.id, name="reject_preference_change", elapsed_ms=0, status="rejected"))
+        session.commit()
+        return {"status": "rejected", "version": draft.base_version}
+
     @app.post("/api/search")
     def search(body: SearchRequest, session: Session = Depends(db_session), user: User = Depends(get_user)):
         result = run_search(session, user, body)
@@ -369,6 +424,14 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     @app.get("/api/runs/{run_id}")
     def historical_run(run_id: str, session: Session = Depends(db_session), user: User = Depends(get_user)):
         return replay(session, owned_run(session, user, run_id))
+
+    @app.post("/api/runs/{run_id}/replay")
+    def exact_replay(run_id: str, session: Session = Depends(db_session), user: User = Depends(get_user)):
+        try:
+            return replay_exact(session, user, owned_run(session, user, run_id), models,
+                                settings.rerank_timeout_seconds)
+        except RuntimeError as error:
+            raise HTTPException(409, str(error)) from error
 
     @app.post("/api/runs/{run_id}/counterfactual")
     def simulate(run_id: str, body: Counterfactual, session: Session = Depends(db_session), user: User = Depends(get_user)):

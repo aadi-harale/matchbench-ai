@@ -1,0 +1,1322 @@
+[
+  {
+    "id": "agent-backend-q01",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "tool-calling agent backend",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q02",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "LLM agent API internship",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q03",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "structured agent tools",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q04",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "Python agent service",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q05",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "agent memory backend",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q06",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "validated tool calls",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q07",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "AI workflow API",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q08",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "agent reliability internship",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q09",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "conversational agent backend",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "agent-backend-q10",
+    "topic": "agent-backend",
+    "split": "development",
+    "text": "typed LLM tools",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "semantic-search-q01",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "semantic search internship",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q02",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "hybrid retrieval engineer",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q03",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "BM25 and embeddings",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q04",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "search relevance internship",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q05",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "vector retrieval role",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q06",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "information retrieval intern",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q07",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "dense sparse search",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q08",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "ranking candidate retrieval",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q09",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "embedding search backend",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "semantic-search-q10",
+    "topic": "semantic-search",
+    "split": "development",
+    "text": "relevance engineering internship",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "semantic search"
+    ]
+  },
+  {
+    "id": "data-platform-q01",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "data platform internship",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q02",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "ETL Python SQL",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q03",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "warehouse pipeline intern",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q04",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "data quality backend",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q05",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "batch ingestion engineer",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q06",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "analytics data platform",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q07",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "SQL pipeline internship",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q08",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "data reliability intern",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q09",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "schema maintenance role",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "data-platform-q10",
+    "topic": "data-platform",
+    "split": "heldout",
+    "text": "Python warehouse backend",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "id": "frontend-access-q01",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "React accessibility internship",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q02",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "TypeScript frontend role",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q03",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "accessible web application",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q04",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "frontend design systems",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q05",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "React product intern",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q06",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "web accessibility engineer",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q07",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "JavaScript UI internship",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q08",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "frontend performance role",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q09",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "TypeScript component systems",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "frontend-access-q10",
+    "topic": "frontend-access",
+    "split": "heldout",
+    "text": "inclusive frontend internship",
+    "preferred_role": "frontend",
+    "evidence_skills": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "platform-sre-q01",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "platform reliability internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q02",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "Docker Linux intern",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q03",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "cloud infrastructure role",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q04",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "Kubernetes platform intern",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q05",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "SRE internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q06",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "deployment reliability engineer",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q07",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "AWS operations intern",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q08",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "container platform role",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q09",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "production diagnostics internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "platform-sre-q10",
+    "topic": "platform-sre",
+    "split": "heldout",
+    "text": "infrastructure automation",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "id": "application-security-q01",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "application security internship",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q02",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "secure Python backend",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q03",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "security engineering intern",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q04",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "API security role",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q05",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "threat modeling internship",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q06",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "backend security testing",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q07",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "secure SQL application",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q08",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "privacy security intern",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q09",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "vulnerability engineering",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "application-security-q10",
+    "topic": "application-security",
+    "split": "heldout",
+    "text": "security automation Python",
+    "preferred_role": "security",
+    "evidence_skills": [
+      "Python",
+      "security"
+    ]
+  },
+  {
+    "id": "mobile-q01",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "mobile engineering internship",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q02",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "Android Java intern",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q03",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "mobile API integration",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q04",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "client application intern",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q05",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "mobile product engineer",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q06",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "Android networking role",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q07",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "mobile reliability internship",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q08",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "Java app development",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q09",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "mobile platform intern",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "mobile-q10",
+    "topic": "mobile",
+    "split": "heldout",
+    "text": "Android Git workflow",
+    "preferred_role": "mobile",
+    "evidence_skills": [
+      "Java",
+      "mobile"
+    ]
+  },
+  {
+    "id": "product-analytics-q01",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "product analytics internship",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q02",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "SQL experimentation role",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q03",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "analytics engineer intern",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q04",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "product metrics Python",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q05",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "A/B test analysis",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q06",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "growth analytics internship",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q07",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "product data intern",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q08",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "experiment measurement role",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q09",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "funnel analytics SQL",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "product-analytics-q10",
+    "topic": "product-analytics",
+    "split": "heldout",
+    "text": "decision science internship",
+    "preferred_role": "data",
+    "evidence_skills": [
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "id": "evaluation-q01",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "LLM evaluation internship",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q02",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "model quality engineer",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q03",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "agent evaluation harness",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q04",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "Python evals role",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q05",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "retrieval evaluation intern",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q06",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "quality benchmark engineer",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q07",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "pytest evaluation role",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q08",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "AI output measurement",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q09",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "model regression internship",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "evaluation-q10",
+    "topic": "evaluation",
+    "split": "heldout",
+    "text": "evaluation dataset engineer",
+    "preferred_role": "evaluation",
+    "evidence_skills": [
+      "Python",
+      "pytest"
+    ]
+  },
+  {
+    "id": "postgres-q01",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "PostgreSQL backend internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q02",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "SQLAlchemy Alembic role",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q03",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "database reliability intern",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q04",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "schema migration engineer",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q05",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "Postgres performance internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q06",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "SQL database backend",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q07",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "migration tooling role",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q08",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "transaction design internship",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q09",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "relational data engineer",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "postgres-q10",
+    "topic": "postgres",
+    "split": "heldout",
+    "text": "PostgreSQL API intern",
+    "preferred_role": "platform",
+    "evidence_skills": [
+      "PostgreSQL",
+      "SQL"
+    ]
+  },
+  {
+    "id": "recommendations-q01",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "recommendation systems internship",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q02",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "personalized ranking role",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q03",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "candidate job matching",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q04",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "recommender engineer intern",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q05",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "ranking personalization",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q06",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "embedding recommendations",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q07",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "matching system internship",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q08",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "preference-aware ranking",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q09",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "recommendation evaluation",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "recommendations-q10",
+    "topic": "recommendations",
+    "split": "heldout",
+    "text": "Python recommender backend",
+    "preferred_role": "search",
+    "evidence_skills": [
+      "Python",
+      "recommendation systems"
+    ]
+  },
+  {
+    "id": "backend-reliability-q01",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "backend reliability internship",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q02",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "FastAPI Redis role",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q03",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "Python service engineering",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q04",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "API operations intern",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q05",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "reliable backend systems",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q06",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "Docker API internship",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q07",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "service diagnostics role",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q08",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "backend production engineer",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q09",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "Python integration backend",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  },
+  {
+    "id": "backend-reliability-q10",
+    "topic": "backend-reliability",
+    "split": "heldout",
+    "text": "FastAPI platform intern",
+    "preferred_role": "backend",
+    "evidence_skills": [
+      "Python",
+      "FastAPI"
+    ]
+  }
+]

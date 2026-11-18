@@ -4,7 +4,7 @@ import type { FormEvent } from "react";
 import {
   algorithmNames, api, cityLine, decimal, percent, readableError, statusLabels,
 } from "./api";
-import type { Comparison, Match, Patch, Run } from "./api";
+import type { Comparison, Match, Patch, ReplayResult, Run } from "./api";
 
 export type Filters = { algorithm: string; location: string; employment: string; work_mode: string };
 export const initialFilters = { algorithm: "personalized", location: "", employment: "", work_mode: "" };
@@ -119,6 +119,8 @@ function Detail({ match, run, onPreference }: { match: Match; run: Run; onPrefer
   const [notice, setNotice] = useState("");
   const [working, setWorking] = useState(false);
   const [feedbackBusy, setFeedbackBusy] = useState(false);
+  const [replay, setReplay] = useState<ReplayResult | null>(null);
+  const [replaying, setReplaying] = useState(false);
 
   async function compare(event: FormEvent) {
     event.preventDefault();
@@ -143,6 +145,12 @@ function Detail({ match, run, onPreference }: { match: Match; run: Run; onPrefer
       setSuggestion(response.suggestion ? { patch: response.suggestion, version: response.version } : null);
     } catch (error) { setNotice(readableError(error)); }
     finally { setFeedbackBusy(false); }
+  }
+  async function replayRun() {
+    setReplaying(true); setNotice("");
+    try { setReplay(await api<ReplayResult>(`/api/runs/${run.run_id}/replay`, "POST")); }
+    catch (error) { setNotice(readableError(error)); }
+    finally { setReplaying(false); }
   }
 
   return <article className="match-detail" id="match-detail" tabIndex={-1} aria-label="Selected match decision">
@@ -195,7 +203,13 @@ function Detail({ match, run, onPreference }: { match: Match; run: Run; onPrefer
             <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
         </dl>
         <p className="muted">Retrieval stages: {match.sources.join(", ") || "Eligibility audit"}. Scores are ranking signals.</p>
-        <a className="text-link" href={`/api/runs/${run.run_id}`} target="_blank" rel="noreferrer">Open stored run <ExternalLink size={14} aria-hidden /></a>
+        <div className="actions">
+          <button type="button" className="secondary" disabled={replaying} onClick={() => { void replayRun(); }}>
+            {replaying ? "Replaying…" : "Replay exact run"}
+          </button>
+          <a className="text-link" href={`/api/runs/${run.run_id}`} target="_blank" rel="noreferrer">Open stored run <ExternalLink size={14} aria-hidden /></a>
+        </div>
+        {replay && <p className="notice" role="status">Exact replay verified: {replay.stored_order.length} ranked jobs kept the same order in {replay.timing.total_ms.toFixed(1)} ms.</p>}
       </>}
       {tab === "compare" && <section className="comparison">
         <h4>Counterfactual Match Inspector</h4>
@@ -215,6 +229,7 @@ function Detail({ match, run, onPreference }: { match: Match; run: Run; onPrefer
             </div>;
           })}
         </div>}
+        {comparison && options[scenario]?.change === "add_skill" && <p className="fine-print">Simulated skill only. No candidate evidence was added.</p>}
       </section>}
       {notice && <p className="notice" role="status">{notice}</p>}
       {tab === "fit" && <form onSubmit={record} className="row-form feedback-form">

@@ -41,6 +41,10 @@ def test_demo_flow_replay_and_counterfactual(client):
     assert replay.status_code == 200, replay.text
     assert replay.json()["before"]["status"] == "fail"
     assert replay.json()["after"]["rank"] > 0
+    exact = client.post(f"/api/runs/{start['run_id']}/replay")
+    assert exact.status_code == 200, exact.text
+    assert exact.json()["exact"] is True
+    assert exact.json()["stored_order"] == exact.json()["replayed_order"]
     assert search(client, "AI/backend internships working on agents and search")["preference_version"] == 1
 
 
@@ -80,6 +84,23 @@ def test_persistent_preference_and_removal(client):
     assert len(export["preference_events"]) == 2 and export["preference_events"][1]["supersedes"]
     assert client.delete("/api/account").status_code == 200
     assert client.post("/api/auth/login", json=credentials).status_code == 401
+
+
+def test_reject_proposal_and_reset_demo(client):
+    client.post("/api/auth/demo")
+    proposal = client.post("/api/agent", json={"text": "No frontend-heavy roles"}).json()
+    before = client.get("/api/preferences").json()
+    rejected = client.post(f"/api/agent/{proposal['id']}/reject")
+    assert rejected.status_code == 200 and rejected.json()["status"] == "rejected"
+    assert client.get("/api/preferences").json() == before
+    assert client.post(f"/api/agent/{proposal['id']}/confirm").status_code == 409
+
+    old_run = search(client, "Python")["run_id"]
+    reset = client.post("/api/demo/reset")
+    assert reset.status_code == 200 and reset.json()["status"] == "reset"
+    memory = client.get("/api/preferences").json()
+    assert memory["version"] == 1 and memory["preferences"]["denied_roles"] == []
+    assert client.get(f"/api/runs/{old_run}").status_code == 404
 
 
 def test_ownership_and_review(client):
@@ -130,10 +151,15 @@ def test_ingest_idempotence_and_versioning(client, tmp_path):
     with factory.begin() as session:
         updated = ingest(session, [record | {"salary_min": 28000}], FakeEmbeddings(tmp_path))
     assert updated["updated"] == 1 and updated["embedded"] == 0
+    with factory.begin() as session:
+        description = ingest(session, [record | {
+            "salary_min": 28000, "description": record["description"] + " Own release diagnostics.",
+        }], FakeEmbeddings(tmp_path))
+    assert description["updated"] == 1 and description["embedded"] == 1
     with factory() as session:
         assert session.scalar(select(func.count()).select_from(JobRow)) == 1
-        assert session.scalar(select(func.count()).select_from(JobVersion)) == 2
-        assert session.scalar(select(func.count()).select_from(JobEmbedding)) == 1
+        assert session.scalar(select(func.count()).select_from(JobVersion)) == 3
+        assert session.scalar(select(func.count()).select_from(JobEmbedding)) == 2
 
 
 @pytest.mark.skipif(not os.getenv("TEST_DATABASE_URL"), reason="postgres service available in CI")

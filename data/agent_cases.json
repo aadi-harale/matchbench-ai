@@ -190,5 +190,248 @@
     "field": null,
     "operation": null,
     "value": null
+  },
+  {
+    "message": "Avoid backend roles.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "backend"
+  },
+  {
+    "message": "No security roles.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "security"
+  },
+  {
+    "message": "Exclude mobile positions.",
+    "field": "denied_roles",
+    "operation": "add",
+    "value": "mobile"
+  },
+  {
+    "message": "Show fewer data roles.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "data"
+  },
+  {
+    "message": "Less platform work, please.",
+    "field": "less_roles",
+    "operation": "add",
+    "value": "platform"
+  },
+  {
+    "message": "Prefer search roles.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "search"
+  },
+  {
+    "message": "Prioritize evaluation roles.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "evaluation"
+  },
+  {
+    "message": "Show more platform roles.",
+    "field": "preferred_roles",
+    "operation": "add",
+    "value": "platform"
+  },
+  {
+    "message": "Allow Bengaluru.",
+    "field": "locations",
+    "operation": "add",
+    "value": "bengaluru"
+  },
+  {
+    "message": "Add Gurugram to my accepted cities.",
+    "field": "locations",
+    "operation": "add",
+    "value": "gurugram"
+  },
+  {
+    "message": "I'm open to Pune.",
+    "field": "locations",
+    "operation": "add",
+    "value": "pune"
+  },
+  {
+    "message": "Don't show roles in Mumbai.",
+    "field": "excluded_locations",
+    "operation": "add",
+    "value": "mumbai"
+  },
+  {
+    "message": "Avoid jobs in Chennai.",
+    "field": "excluded_locations",
+    "operation": "add",
+    "value": "chennai"
+  },
+  {
+    "message": "Pune is okay again.",
+    "field": "excluded_locations",
+    "operation": "remove",
+    "value": "pune"
+  },
+  {
+    "message": "I can relocate.",
+    "field": "allow_relocation",
+    "operation": "set",
+    "value": true
+  },
+  {
+    "message": "I cannot relocate.",
+    "field": "allow_relocation",
+    "operation": "set",
+    "value": false
+  },
+  {
+    "message": "Prefer remote roles.",
+    "field": "preferred_work_modes",
+    "operation": "add",
+    "value": "remote"
+  },
+  {
+    "message": "Prioritize hybrid work.",
+    "field": "preferred_work_modes",
+    "operation": "add",
+    "value": "hybrid"
+  },
+  {
+    "message": "I prefer on-site roles.",
+    "field": "preferred_work_modes",
+    "operation": "add",
+    "value": "on-site"
+  },
+  {
+    "message": "Don't show jobs from Acme Corp.",
+    "field": "denied_companies",
+    "operation": "add",
+    "value": "acme corp"
+  },
+  {
+    "message": "Exclude roles from Example Labs.",
+    "field": "denied_companies",
+    "operation": "add",
+    "value": "example labs"
+  },
+  {
+    "message": "Avoid jobs from Demo Systems.",
+    "field": "denied_companies",
+    "operation": "add",
+    "value": "demo systems"
+  },
+  {
+    "message": "Prefer jobs using Kubernetes.",
+    "field": "preferred_skills",
+    "operation": "add",
+    "value": "kubernetes"
+  },
+  {
+    "message": "Prioritize PostgreSQL roles.",
+    "field": "preferred_skills",
+    "operation": "add",
+    "value": "postgresql"
+  },
+  {
+    "message": "At least INR 45000 monthly.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 45000
+  },
+  {
+    "message": "My minimum is ₹75k.",
+    "field": "minimum_stipend",
+    "operation": "set",
+    "value": 75000
+  },
+  {
+    "message": "No frontend roles and prefer remote work.",
+    "changes": [
+      {"field": "denied_roles", "operation": "add", "value": "frontend"},
+      {"field": "preferred_work_modes", "operation": "add", "value": "remote"}
+    ]
+  },
+  {
+    "message": "Paid roles only, with at least INR 30000.",
+    "changes": [
+      {"field": "paid_only", "operation": "set", "value": true},
+      {"field": "minimum_stipend", "operation": "set", "value": 30000}
+    ]
+  },
+  {
+    "message": "Allow Bengaluru and prefer backend roles.",
+    "changes": [
+      {"field": "locations", "operation": "add", "value": "bengaluru"},
+      {"field": "preferred_roles", "operation": "add", "value": "backend"}
+    ]
+  },
+  {
+    "message": "I'm interested in Kubernetes.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "I'm learning Redis.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Don't store that preference.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "For this search only, prefer remote.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Temporarily avoid frontend roles.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Use my religion to choose companies.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Prefer roles for people my age.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Only Bangalore if the stipend is above 50k.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Remote unless the team is in Gurugram.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "I want good culture.",
+    "field": null,
+    "operation": null,
+    "value": null
+  },
+  {
+    "message": "Do something smart with my job feed.",
+    "field": null,
+    "operation": null,
+    "value": null
   }
 ]

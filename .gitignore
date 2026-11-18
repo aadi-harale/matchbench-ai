@@ -2,6 +2,8 @@
 /.env
 /.models/
 /.matchbench/
+/.audit/
+/graphify-out/
 *.sqlite*
 *.db
 __pycache__/
