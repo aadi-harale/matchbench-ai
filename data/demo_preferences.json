@@ -1,0 +1,23 @@
+{
+  "employment": "internship",
+  "locations": [
+    "Bengaluru",
+    "Gurugram",
+    "Pune"
+  ],
+  "allow_relocation": false,
+  "paid_only": true,
+  "minimum_stipend": 15000,
+  "preferred_roles": [
+    "backend",
+    "search"
+  ],
+  "preferred_skills": [
+    "LLM agents",
+    "semantic search"
+  ],
+  "preferred_work_modes": [
+    "hybrid",
+    "on-site"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "scope": "Generated workload on embedded SQLite with exact vector scores. No relevance claims.",
+  "jobs": 3072,
+  "queries": 30,
+  "database_bytes": 11071488,
+  "initial": {
+    "inserted": 3072,
+    "updated": 0,
+    "unchanged": 0,
+    "duplicates": 0,
+    "embedded": 328,
+    "elapsed_ms": 5649.27
+  },
+  "identical_reimport": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 3072,
+    "duplicates": 0,
+    "embedded": 0,
+    "elapsed_ms": 3369.84
+  },
+  "change_batch": {
+    "inserted": 0,
+    "updated": 128,
+    "unchanged": 0,
+    "duplicates": 0,
+    "embedded": 64,
+    "elapsed_ms": 643.55
+  },
+  "metadata_only_updates": 64,
+  "description_updates": 64,
+  "latency": {
+    "filter_ms": {
+      "p50": 14.178,
+      "p95": 78.439
+    },
+    "retrieval_ms": {
+      "p50": 459.148,
+      "p95": 525.624
+    },
+    "rerank_ms": {
+      "p50": 106.37,
+      "p95": 140.336
+    },
+    "total_ms": {
+      "p50": 615.803,
+      "p95": 701.033
+    }
+  },
+  "timing_scope": "Warm model and query cache; database vector reads and ranking included."
+}

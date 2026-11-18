@@ -1,0 +1,1027 @@
+[
+  {
+    "id": "trace-search",
+    "company": "IndexSpring",
+    "title": "AI Search & Backend Intern",
+    "description": "Build APIs and retrieval for a career agent. Own embedding refresh jobs, search relevance experiments and FastAPI integration.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 45000,
+    "salary_max": 45000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "semantic search",
+      "LLM agents",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-backend",
+    "company": "Agent Foundry",
+    "title": "Backend Engineer Intern, Agent Tools",
+    "description": "Implement a typed tool registry, preference memory, and durable audit events for tool-calling assistants.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 40000,
+    "salary_max": 40000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "LLM agents",
+      "SQL",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "vec-infra",
+    "company": "Signal Quarry",
+    "title": "Search Infrastructure Intern",
+    "description": "Work on vector search and lexical indexing. Compare ranking quality, tune SQL queries and maintain incremental index jobs.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 35000,
+    "salary_max": 35000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "search",
+    "skills": [
+      "Python",
+      "PostgreSQL",
+      "pgvector",
+      "BM25",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-senior",
+    "company": "IndexSpring",
+    "title": "Senior AI Search & Backend Engineer",
+    "description": "Build APIs and retrieval for a career agent. Own embedding refresh jobs, search relevance experiments and FastAPI integration. Requires five years of professional backend experience.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "full-time",
+    "experience_min": 5,
+    "salary_min": 180000,
+    "salary_max": 180000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "semantic search",
+      "LLM agents",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-hyd",
+    "company": "Routing Lab",
+    "title": "Agent Infrastructure Intern",
+    "description": "Build agent tools with preference memory and an evidence-driven job search API.",
+    "locations": [
+      "Hyderabad"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 42000,
+    "salary_max": 42000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "LLM agents",
+      "PostgreSQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-unknown",
+    "company": "Pattern Dock",
+    "title": "AI Workflow Intern",
+    "description": "Prototype guarded tool calls and structured outputs for a conversational assistant. Compensation is undisclosed.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": null,
+    "salary_max": null,
+    "salary_period": "unknown",
+    "currency": null,
+    "role": "backend",
+    "skills": [
+      "Python",
+      "LLM agents",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-unpaid",
+    "company": "North Unit",
+    "title": "Backend AI Internship",
+    "description": "Build agent-facing APIs and test structured outputs. This internship is unpaid.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "remote",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 0,
+    "salary_max": 0,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "LLM agents"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "semantic-generic",
+    "company": "Nimbus Workshop",
+    "title": "AI Innovation Intern",
+    "description": "Research the landscape of conversational agents, semantic search and personalization. Prepare reports and product briefs.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 30000,
+    "salary_max": 30000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "research",
+    "skills": [
+      "analytics",
+      "communication"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "kube-backend",
+    "company": "Container Grove",
+    "title": "Platform Backend Intern",
+    "description": "Implement a Python service and own Kubernetes deployments, metrics and incident runbooks.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 42000,
+    "salary_max": 42000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Kubernetes"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "python-api",
+    "company": "Relay Bridge",
+    "title": "Python API Engineering Intern",
+    "description": "Build versioned HTTP APIs, integration tests, webhooks and a PostgreSQL migration path.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 31000,
+    "salary_max": 31000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "sql-api",
+    "company": "Rowcraft",
+    "title": "Database & API Intern",
+    "description": "Model relational tables, write migration scripts, tune queries and expose endpoints on the application backend.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 32000,
+    "salary_max": 32000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "PostgreSQL",
+      "SQL",
+      "Python"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "async-backend",
+    "company": "Cloud Lantern",
+    "title": "Distributed Backend Intern",
+    "description": "Maintain batch workers and idempotency keys for retries. Write HTTP integration tests and audit trails.",
+    "locations": [],
+    "work_mode": "remote",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 34000,
+    "salary_max": 34000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "Docker",
+      "SQL",
+      "AWS"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "full-agent",
+    "company": "Reroute",
+    "title": "AI Product Intern",
+    "description": "Build the React conversation interface and agent controls for a semantic job search prototype. Most work is frontend integration.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 42500,
+    "salary_max": 42500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "frontend",
+    "skills": [
+      "React",
+      "TypeScript",
+      "Python",
+      "LLM agents",
+      "FastAPI"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "frontend-console",
+    "company": "Pixel Rail",
+    "title": "React Frontend Intern",
+    "description": "Build accessible search panels and production React screens with TypeScript and responsive CSS.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 37000,
+    "salary_max": 37000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "frontend",
+    "skills": [
+      "React",
+      "TypeScript",
+      "CSS",
+      "accessibility"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "frontend-app",
+    "company": "Studio Canvas",
+    "title": "Product UI Engineering Intern",
+    "description": "Translate design files into accessible React components. Improve keyboard navigation and test mobile layouts.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 30000,
+    "salary_max": 30000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "frontend",
+    "skills": [
+      "React",
+      "TypeScript",
+      "Figma",
+      "accessibility"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "design-systems",
+    "company": "Glyph Track",
+    "title": "Design Systems Intern",
+    "description": "Maintain UI component tokens, responsive web layouts, and product accessibility.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 33000,
+    "salary_max": 33000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "frontend",
+    "skills": [
+      "React",
+      "CSS",
+      "design systems"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-eval",
+    "company": "Prompt Ledger",
+    "title": "LLM Evaluation Intern",
+    "description": "Build evaluation cases for evidence citation, schema validity and tool-call decisions. Track unsupported claims and retries.",
+    "locations": [],
+    "work_mode": "remote",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 36000,
+    "salary_max": 36000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "evaluation",
+    "skills": [
+      "Python",
+      "LLM agents",
+      "pytest",
+      "structured outputs"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "ranking-eval",
+    "company": "Response Foundry",
+    "title": "Search Relevance Intern",
+    "description": "Build graded query-job judgments and measure nDCG, MRR, and recall for lexical, vector and hybrid search.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 43000,
+    "salary_max": 43000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "evaluation",
+    "skills": [
+      "Python",
+      "BM25",
+      "semantic search",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "rag-eval",
+    "company": "Measure Rabbit",
+    "title": "RAG Quality Intern",
+    "description": "Evaluate citation groundedness in a retrieval-augmented application. Build regression data and compare answer quality.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 34000,
+    "salary_max": 34000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "evaluation",
+    "skills": [
+      "Python",
+      "LLM agents",
+      "semantic search",
+      "pytest"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "ranking-recs",
+    "company": "Catalog River",
+    "title": "Recommendation ML Intern",
+    "description": "Compare nearest-neighbor candidate generation and cross-encoder ranking. Study feedback and personalized recommendations.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 45000,
+    "salary_max": 45000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "search",
+    "skills": [
+      "Python",
+      "embeddings",
+      "semantic search",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "catalog-search",
+    "company": "Shelf Works",
+    "title": "Catalog Search Intern",
+    "description": "Implement query processing, product retrieval, embedding-based discovery and lexical ranking metrics.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 35500,
+    "salary_max": 35500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "search",
+    "skills": [
+      "Python",
+      "BM25",
+      "SQL",
+      "embeddings"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "nlp-applied",
+    "company": "Language Mill",
+    "title": "Applied NLP Intern",
+    "description": "Train lightweight text classifiers and compare embeddings for semantic clustering and entity extraction.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 38000,
+    "salary_max": 38000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "research",
+    "skills": [
+      "Python",
+      "embeddings",
+      "PyTorch"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "ml-vision",
+    "company": "Edge Frame",
+    "title": "Computer Vision Intern",
+    "description": "Train image classifiers, benchmark edge inference, and create annotation tooling for camera data.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 37000,
+    "salary_max": 37000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "research",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "OpenCV"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "infra-ops",
+    "company": "Cloud Kiln",
+    "title": "Cloud Infrastructure Intern",
+    "description": "Build deployment pipelines, health checks, monitoring and incident playbooks for containerized workers.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 36000,
+    "salary_max": 36000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "platform",
+    "skills": [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "observability"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "infra-oncall",
+    "company": "Uptime Works",
+    "title": "Site Reliability Intern",
+    "description": "Measure p95 latency, maintain service dashboards and test rate limits for public APIs.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 34000,
+    "salary_max": 34000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "platform",
+    "skills": [
+      "Linux",
+      "Docker",
+      "observability",
+      "Python"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "db-platform",
+    "company": "Bonsai Systems",
+    "title": "Database Platform Intern",
+    "description": "Improve PostgreSQL backups, query performance and safe migrations. Profile indexes and connection pooling.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 36500,
+    "salary_max": 36500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "platform",
+    "skills": [
+      "PostgreSQL",
+      "SQL",
+      "Linux",
+      "Docker"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "data-ingest",
+    "company": "Stream Atlas",
+    "title": "Data Platform Intern",
+    "description": "Ingest changing records and maintain incremental indexed ETL pipelines with deduplication and audit history.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 34500,
+    "salary_max": 34500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "data",
+    "skills": [
+      "Python",
+      "SQL",
+      "PostgreSQL",
+      "ETL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "data-analytics",
+    "company": "Clear Metric",
+    "title": "Product Analytics Intern",
+    "description": "Build dashboards from event tables, define product metrics, and validate data quality in batch queries.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 26500,
+    "salary_max": 26500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "data",
+    "skills": [
+      "SQL",
+      "Python",
+      "analytics"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "data-warehouse",
+    "company": "Tessera Data",
+    "title": "Analytics Engineering Intern",
+    "description": "Model warehouse tables. Validate dbt runs and ensure incremental transforms handle late-arriving data.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 32500,
+    "salary_max": 32500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "data",
+    "skills": [
+      "SQL",
+      "ETL",
+      "Python"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "secure-api",
+    "company": "Lockbook",
+    "title": "Application Security Engineering Intern",
+    "description": "Review authentication and privacy controls, test tenant authorization, and protect upload endpoints.",
+    "locations": [],
+    "work_mode": "remote",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 36000,
+    "salary_max": 36000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "security",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "security",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "privacy-data",
+    "company": "Shoreline Vault",
+    "title": "Privacy Engineering Intern",
+    "description": "Implement account data export, deletion and PII redaction in event logs.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 39000,
+    "salary_max": 39000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "security",
+    "skills": [
+      "Python",
+      "security",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "qa-apis",
+    "company": "Test Harbor",
+    "title": "API Reliability Intern",
+    "description": "Write API integration tests, inject timeouts, and validate behavior under partial failures.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 25500,
+    "salary_max": 25500,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "evaluation",
+    "skills": [
+      "Python",
+      "pytest",
+      "FastAPI"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "ios-eng",
+    "company": "Palm Device",
+    "title": "Mobile Engineering Intern",
+    "description": "Build iOS accessibility and offline state for a mobile product.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 37000,
+    "salary_max": 37000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "mobile",
+    "skills": [
+      "Swift",
+      "iOS",
+      "accessibility"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "android-eng",
+    "company": "Transit Loop",
+    "title": "Android Development Intern",
+    "description": "Develop Android navigation, app analytics and offline persistence.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 29000,
+    "salary_max": 29000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "mobile",
+    "skills": [
+      "Kotlin",
+      "Android",
+      "SQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "product-ops",
+    "company": "Campus Relay",
+    "title": "Talent Operations Intern",
+    "description": "Coordinate candidate interviews and maintain recruiting dashboards.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 24000,
+    "salary_max": 24000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "operations",
+    "skills": [
+      "communication",
+      "analytics"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "sales-ops",
+    "company": "Pipeline Garden",
+    "title": "Sales Operations Intern",
+    "description": "Track customer outreach and help maintain a sales CRM.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 20000,
+    "salary_max": 20000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "operations",
+    "skills": [
+      "analytics",
+      "communication"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "content-intern",
+    "company": "Lumen Press",
+    "title": "Technical Writing Intern",
+    "description": "Write API examples, revise documentation, and interview engineers about onboarding.",
+    "locations": [],
+    "work_mode": "remote",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 28000,
+    "salary_max": 28000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "writing",
+    "skills": [
+      "documentation",
+      "communication"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "quant-data",
+    "company": "Return Basis",
+    "title": "Financial Data Intern",
+    "description": "Build financial-data analysis notebooks and maintain market-data import jobs.",
+    "locations": [
+      "Gurugram"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 30000,
+    "salary_max": 30000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "data",
+    "skills": [
+      "Python",
+      "SQL",
+      "analytics"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "platform-go",
+    "company": "Piston Grid",
+    "title": "Systems Engineering Intern",
+    "description": "Implement low-level telemetry and maintain Linux-based systems for container orchestration.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "on-site",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 45000,
+    "salary_max": 45000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "platform",
+    "skills": [
+      "Go",
+      "Linux",
+      "Kubernetes"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "agent-contract",
+    "company": "Route Desk",
+    "title": "Conversation AI Engineer",
+    "description": "Implement conversation state and job retrieval APIs for a contract role.",
+    "locations": [
+      "Bengaluru"
+    ],
+    "work_mode": "hybrid",
+    "employment": "contract",
+    "experience_min": 0,
+    "salary_min": 80000,
+    "salary_max": 80000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "LLM agents",
+      "semantic search"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "backend-low",
+    "company": "Folio Builder",
+    "title": "Backend Search Intern",
+    "description": "Build a jobs API and implement a simple lexical search endpoint.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 8000,
+    "salary_max": 8000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "BM25"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true
+  },
+  {
+    "id": "retired-role",
+    "company": "Daybreak Data",
+    "title": "Python Backend Search Intern",
+    "description": "Maintain a semantic job search service. This example posting has expired.",
+    "locations": [
+      "Pune"
+    ],
+    "work_mode": "hybrid",
+    "employment": "internship",
+    "experience_min": 0,
+    "salary_min": 42000,
+    "salary_max": 42000,
+    "salary_period": "month",
+    "currency": "INR",
+    "role": "backend",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "source": "curated demo fixture",
+    "illustrative": true,
+    "expires_at": "2024-01-01T00:00:00Z"
+  }
+]

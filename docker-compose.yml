@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: matchbench
+      POSTGRES_PASSWORD: local-matchbench
+      POSTGRES_DB: matchbench
+    volumes:
+      - matchbench-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U matchbench]
+      interval: 3s
+      timeout: 3s
+      retries: 12
+  app:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://matchbench:local-matchbench@postgres:5432/matchbench
+      SESSION_SECRET: ${SESSION_SECRET:-local-compose-only-change-before-hosting-6Xgi35Tcc2}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    command: [sh, -c, "alembic upgrade head && python -m matchbench.cli ingest && exec uvicorn matchbench.api:app --host 0.0.0.0 --port 8000 --no-access-log"]
+    ports:
+      - "127.0.0.1:8000:8000"
+volumes:
+  matchbench-db:

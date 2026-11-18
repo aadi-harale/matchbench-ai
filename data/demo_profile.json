@@ -1,0 +1,67 @@
+{
+  "name": "Aadi Harale",
+  "years": 0,
+  "education": [],
+  "experience": [],
+  "projects": [
+    "ArogyaMitra",
+    "SahiAaya / Graph Hacks",
+    "DisburseProof"
+  ],
+  "evidence": [
+    {
+      "id": "ev-aromi",
+      "skill": "LLM agents",
+      "excerpt": "AROMI uses a planner → tool → response loop for personalized workflows and logs agent decisions.",
+      "source": "ArogyaMitra · documented project architecture",
+      "source_url": "https://github.com/aadi-harale/ArogyaMitra#-agentic-ai-architecture",
+      "method": "public source",
+      "review": "accepted"
+    },
+    {
+      "id": "ev-fastapi",
+      "skill": "FastAPI",
+      "excerpt": "ArogyaMitra documents a FastAPI backend with SQLAlchemy, Pydantic and Alembic.",
+      "source": "ArogyaMitra · project documentation",
+      "source_url": "https://github.com/aadi-harale/ArogyaMitra",
+      "method": "public source",
+      "review": "accepted"
+    },
+    {
+      "id": "ev-pg",
+      "skill": "PostgreSQL",
+      "excerpt": "ArogyaMitra’s documented application persists data in PostgreSQL or SQLite.",
+      "source": "ArogyaMitra · project documentation",
+      "source_url": "https://github.com/aadi-harale/ArogyaMitra",
+      "method": "public source",
+      "review": "accepted"
+    },
+    {
+      "id": "ev-python",
+      "skill": "Python",
+      "excerpt": "SahiAaya documents a Python reference implementation alongside a graph-backed matcher and a SQL comparator.",
+      "source": "SahiAaya · project documentation",
+      "source_url": "https://github.com/aadi-harale/graphhacks",
+      "method": "public source",
+      "review": "accepted"
+    },
+    {
+      "id": "ev-docker",
+      "skill": "Docker",
+      "excerpt": "Pinned the password-hashing dependency to address compatibility in the Docker image.",
+      "source": "ArogyaMitra · attributable commit",
+      "source_url": "https://github.com/aadi-harale/ArogyaMitra/commit/890a2a9d97c1079d2a73597bf8c2a55fea5912e8",
+      "method": "public source",
+      "review": "accepted"
+    },
+    {
+      "id": "ev-aws",
+      "skill": "AWS",
+      "excerpt": "DisburseProof documents AWS Step Functions, SQS, and a replayable audit trail.",
+      "source": "DisburseProof · project documentation",
+      "source_url": "https://github.com/aadi-harale/disburseproof",
+      "method": "public source",
+      "review": "accepted"
+    }
+  ]
+}

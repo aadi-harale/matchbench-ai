@@ -1,0 +1,15 @@
+/.venv/
+/.env
+/.models/
+/.matchbench/
+*.sqlite*
+*.db
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.vercel/
+node_modules/
+dist/
+playwright-report/
+test-results/

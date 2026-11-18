@@ -1,0 +1,244 @@
+[
+  {
+    "topic": "agent-tools",
+    "split": "development",
+    "preferred_role": "backend",
+    "grades": {
+      "trace-search": 3,
+      "agent-backend": 3,
+      "agent-eval": 2,
+      "full-agent": 2,
+      "python-api": 1,
+      "rag-eval": 1,
+      "vec-infra": 1
+    },
+    "queries": [
+      "Python internships building tool-calling agents with saved preference memory",
+      "Typed agent tools and structured outputs for conversational assistants",
+      "Backend engineering for an AI career agent, tool logs and persisted context",
+      "Agent orchestration internship with API tools and SQL-backed memory",
+      "AI assistant engineering with reliable function calls and persistent state"
+    ]
+  },
+  {
+    "topic": "warehouse",
+    "split": "development",
+    "preferred_role": "data",
+    "grades": {
+      "data-ingest": 3,
+      "data-warehouse": 3,
+      "data-analytics": 2,
+      "quant-data": 2,
+      "db-platform": 1,
+      "sql-api": 1
+    },
+    "queries": [
+      "Internship building incremental Python ETL into relational tables",
+      "Warehouse pipelines, dbt transforms and late arriving data",
+      "Data ingestion with deduplication and audit history",
+      "Model event data with SQL and maintain automated imports",
+      "Own a batch analytics pipeline and validate warehouse quality"
+    ]
+  },
+  {
+    "topic": "career-search",
+    "split": "holdout",
+    "preferred_role": "backend",
+    "grades": {
+      "trace-search": 3,
+      "agent-backend": 3,
+      "vec-infra": 3,
+      "ranking-eval": 2,
+      "ranking-recs": 2,
+      "full-agent": 1,
+      "semantic-generic": 1,
+      "catalog-search": 1
+    },
+    "queries": [
+      "AI/backend internships working on agents and search",
+      "Backend internship building semantic job discovery and recommendation APIs",
+      "I want to implement AI search that remembers what a candidate wants",
+      "Find internships working on vector indexing for conversational job agents",
+      "Python retrieval backend for career matching and ranking experiments"
+    ]
+  },
+  {
+    "topic": "web-access",
+    "split": "holdout",
+    "preferred_role": "frontend",
+    "grades": {
+      "frontend-console": 3,
+      "frontend-app": 3,
+      "design-systems": 3,
+      "full-agent": 2,
+      "ios-eng": 1
+    },
+    "queries": [
+      "React and TypeScript internships delivering accessible UI",
+      "Frontend work on keyboard navigation and responsive search panels",
+      "Translate Figma into React components for a product team",
+      "Maintain design tokens and shared web components",
+      "Internships involving WCAG-friendly React screens and mobile layouts"
+    ]
+  },
+  {
+    "topic": "service-apis",
+    "split": "holdout",
+    "preferred_role": "backend",
+    "grades": {
+      "python-api": 3,
+      "sql-api": 3,
+      "async-backend": 3,
+      "kube-backend": 2,
+      "trace-search": 2,
+      "secure-api": 2,
+      "qa-apis": 2,
+      "agent-backend": 1
+    },
+    "queries": [
+      "Python FastAPI backend internships with SQL migrations",
+      "Build transactional service APIs and PostgreSQL models",
+      "Internship writing HTTP endpoints and integration tests",
+      "Own a webhooks service with idempotent retries",
+      "Versioned REST APIs, queries, and database schemas for a product backend"
+    ]
+  },
+  {
+    "topic": "grounded-eval",
+    "split": "holdout",
+    "preferred_role": "evaluation",
+    "grades": {
+      "agent-eval": 3,
+      "rag-eval": 3,
+      "ranking-eval": 2,
+      "qa-apis": 2,
+      "agent-backend": 1
+    },
+    "queries": [
+      "Evaluate groundedness and unsupported claims in LLM answers",
+      "I want to write regression cases for RAG citations",
+      "Internship measuring tool-call JSON schema compliance",
+      "Test if model explanations are grounded in source evidence",
+      "Build evaluation datasets for structured LLM outputs and retries"
+    ]
+  },
+  {
+    "topic": "search-relevance",
+    "split": "holdout",
+    "preferred_role": "search",
+    "grades": {
+      "ranking-eval": 3,
+      "ranking-recs": 3,
+      "vec-infra": 3,
+      "catalog-search": 3,
+      "trace-search": 2,
+      "rag-eval": 1,
+      "nlp-applied": 1
+    },
+    "queries": [
+      "BM25 pgvector hybrid retrieval and relevance ranking",
+      "Build search relevance judgments and compare nDCG at ten",
+      "Information retrieval internship measuring semantic and lexical quality",
+      "Work on ANN embeddings and cross-encoder reranking",
+      "Tune product search rankings by measuring precision and recall"
+    ]
+  },
+  {
+    "topic": "deploy-sre",
+    "split": "holdout",
+    "preferred_role": "platform",
+    "grades": {
+      "infra-ops": 3,
+      "infra-oncall": 3,
+      "platform-go": 2,
+      "kube-backend": 2,
+      "db-platform": 2,
+      "async-backend": 2,
+      "qa-apis": 1
+    },
+    "queries": [
+      "Kubernetes Docker deployments, observability and incident response",
+      "Internship designing health checks and deployment pipelines",
+      "Measure tail latency and protect a public API under load",
+      "Infrastructure Python and Linux for reliable container workers",
+      "Work on deployment runbooks and service telemetry"
+    ]
+  },
+  {
+    "topic": "privacy",
+    "split": "holdout",
+    "preferred_role": "security",
+    "grades": {
+      "secure-api": 3,
+      "privacy-data": 3,
+      "qa-apis": 1,
+      "python-api": 1,
+      "infra-oncall": 1
+    },
+    "queries": [
+      "Privacy engineering for account export and deletion in Python",
+      "API security internship testing authentication and tenant access",
+      "Prevent PII from appearing in system logs",
+      "Build access control and safe document upload flows",
+      "Write security regression tests for public backend services"
+    ]
+  },
+  {
+    "topic": "postgres",
+    "split": "holdout",
+    "preferred_role": "platform",
+    "grades": {
+      "db-platform": 3,
+      "sql-api": 3,
+      "vec-infra": 2,
+      "data-ingest": 2,
+      "python-api": 2,
+      "data-warehouse": 1
+    },
+    "queries": [
+      "PostgreSQL indexing, migrations and query plans",
+      "Database engineering intern tuning SQL performance",
+      "Improve Postgres backup reliability and connection pooling",
+      "Design normalized database tables and write API queries",
+      "Optimize PostgreSQL indexes for vector and relational data"
+    ]
+  },
+  {
+    "topic": "mobile",
+    "split": "holdout",
+    "preferred_role": "mobile",
+    "grades": {
+      "ios-eng": 3,
+      "android-eng": 3,
+      "frontend-app": 1,
+      "frontend-console": 1
+    },
+    "queries": [
+      "Mobile product engineering internships for Swift or Kotlin",
+      "Implement offline state and accessibility in a native app",
+      "Android development internship using Kotlin and SQL",
+      "iOS internship working on Swift navigation and accessibility",
+      "Build native mobile UX and app analytics"
+    ]
+  },
+  {
+    "topic": "product-analytics",
+    "split": "holdout",
+    "preferred_role": "data",
+    "grades": {
+      "data-analytics": 3,
+      "data-warehouse": 3,
+      "quant-data": 2,
+      "data-ingest": 2,
+      "sales-ops": 1,
+      "product-ops": 1
+    },
+    "queries": [
+      "SQL and Python product analytics internships",
+      "Build dashboards from event tables for a product team",
+      "Use data quality checks to track product metrics",
+      "Analyze account activity and validate metrics in SQL queries",
+      "SQL data modeling for analytics dashboards"
+    ]
+  }
+]

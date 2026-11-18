@@ -1,0 +1,302 @@
+{
+  "dataset": "Curated illustrative job fixtures with explicit per-topic grades",
+  "scope": "Graded relevance on curated fixtures. All omitted pairs in a topic were judged grade 0.",
+  "generated_at": "2026-11-18T13:45:10.892852+00:00",
+  "dataset_hash": "e02d55ce5ddfcc5171537ee16d2bbedbca2373cddca07d4dd18cf48e772c9f52",
+  "judgments_hash": "33419ec9e0c552f548aa2d153364c632c751d8273e33d696e19ea6584ad5f709",
+  "jobs": 42,
+  "indexed_vectors": 42,
+  "index_bytes": 78650,
+  "lexical_artifact_bytes": 14138,
+  "vector_payload_bytes": 64512,
+  "queries": 50,
+  "development_queries": 10,
+  "judgments": 2100,
+  "nonzero_judgments": 305,
+  "heldout_topics": 10,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41:onnx/model_quint8_avx2.onnx",
+  "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2@233902d25c440f23af6f7d6e94d2946bac0bee0a:onnx/model_quint8_avx2.onnx",
+  "device": "Windows AMD64 · Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+  "database": "sqlite",
+  "python": "3.12.10",
+  "alpha": 0.5,
+  "timing_scope": "Warm models and cached query vectors. Stage timing covers in-process ranking and vector lookup.",
+  "validation": [
+    {
+      "alpha": 0.25,
+      "ndcg": 0.7601350782141911
+    },
+    {
+      "alpha": 0.5,
+      "ndcg": 0.7625082602816856
+    },
+    {
+      "alpha": 0.75,
+      "ndcg": 0.7548285711093498
+    }
+  ],
+  "ranking": [
+    {
+      "algorithm": "keyword",
+      "name": "Keyword overlap",
+      "precision_at_5": 0.44,
+      "recall_at_10": 0.65519,
+      "mrr": 0.895872,
+      "ndcg_at_10": 0.681932,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.073,
+          "p95": 0.093
+        },
+        "retrieval_ms": {
+          "p50": 0.037,
+          "p95": 0.059
+        },
+        "rerank_ms": {
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "total_ms": {
+          "p50": 0.334,
+          "p95": 0.587
+        }
+      },
+      "mean_reranker_pairs": 0
+    },
+    {
+      "algorithm": "bm25",
+      "name": "BM25",
+      "precision_at_5": 0.488,
+      "recall_at_10": 0.717857,
+      "mrr": 0.938333,
+      "ndcg_at_10": 0.724873,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.083,
+          "p95": 0.107
+        },
+        "retrieval_ms": {
+          "p50": 0.065,
+          "p95": 0.112
+        },
+        "rerank_ms": {
+          "p50": 0.0,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 0.393,
+          "p95": 0.782
+        }
+      },
+      "mean_reranker_pairs": 0
+    },
+    {
+      "algorithm": "embedding",
+      "name": "Embeddings",
+      "precision_at_5": 0.54,
+      "recall_at_10": 0.892095,
+      "mrr": 0.98,
+      "ndcg_at_10": 0.847759,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.094,
+          "p95": 0.181
+        },
+        "retrieval_ms": {
+          "p50": 6.368,
+          "p95": 7.84
+        },
+        "rerank_ms": {
+          "p50": 0.001,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 7.175,
+          "p95": 9.133
+        }
+      },
+      "mean_reranker_pairs": 0
+    },
+    {
+      "algorithm": "hybrid",
+      "name": "Hybrid",
+      "precision_at_5": 0.548,
+      "recall_at_10": 0.881381,
+      "mrr": 0.96,
+      "ndcg_at_10": 0.831663,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.095,
+          "p95": 0.187
+        },
+        "retrieval_ms": {
+          "p50": 5.999,
+          "p95": 7.072
+        },
+        "rerank_ms": {
+          "p50": 0.001,
+          "p95": 0.001
+        },
+        "total_ms": {
+          "p50": 6.904,
+          "p95": 8.257
+        }
+      },
+      "mean_reranker_pairs": 0
+    },
+    {
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.564,
+      "recall_at_10": 0.859571,
+      "mrr": 0.962222,
+      "ndcg_at_10": 0.826291,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.099,
+          "p95": 0.124
+        },
+        "retrieval_ms": {
+          "p50": 6.702,
+          "p95": 8.107
+        },
+        "rerank_ms": {
+          "p50": 107.162,
+          "p95": 128.153
+        },
+        "total_ms": {
+          "p50": 114.686,
+          "p95": 136.48
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "algorithm": "personalized",
+      "name": "Hybrid + personalization",
+      "precision_at_5": 0.624,
+      "recall_at_10": 0.893571,
+      "mrr": 0.964,
+      "ndcg_at_10": 0.848983,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.108,
+          "p95": 0.16
+        },
+        "retrieval_ms": {
+          "p50": 6.848,
+          "p95": 7.902
+        },
+        "rerank_ms": {
+          "p50": 106.364,
+          "p95": 125.563
+        },
+        "total_ms": {
+          "p50": 114.031,
+          "p95": 133.659
+        }
+      },
+      "mean_reranker_pairs": 20
+    }
+  ],
+  "rerank_depths": [
+    {
+      "depth": 20,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.564,
+      "recall_at_10": 0.859571,
+      "mrr": 0.962222,
+      "ndcg_at_10": 0.826291,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.099,
+          "p95": 0.124
+        },
+        "retrieval_ms": {
+          "p50": 6.702,
+          "p95": 8.107
+        },
+        "rerank_ms": {
+          "p50": 107.162,
+          "p95": 128.153
+        },
+        "total_ms": {
+          "p50": 114.686,
+          "p95": 136.48
+        }
+      },
+      "mean_reranker_pairs": 20
+    },
+    {
+      "depth": 50,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.564,
+      "recall_at_10": 0.859571,
+      "mrr": 0.962222,
+      "ndcg_at_10": 0.82318,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.098,
+          "p95": 0.138
+        },
+        "retrieval_ms": {
+          "p50": 6.947,
+          "p95": 8.943
+        },
+        "rerank_ms": {
+          "p50": 202.902,
+          "p95": 231.44
+        },
+        "total_ms": {
+          "p50": 211.209,
+          "p95": 239.429
+        }
+      },
+      "mean_reranker_pairs": 39
+    },
+    {
+      "depth": 100,
+      "algorithm": "hybrid_rerank",
+      "name": "Hybrid + cross-encoder",
+      "precision_at_5": 0.564,
+      "recall_at_10": 0.859571,
+      "mrr": 0.962222,
+      "ndcg_at_10": 0.82318,
+      "latency": {
+        "filter_ms": {
+          "p50": 0.099,
+          "p95": 0.127
+        },
+        "retrieval_ms": {
+          "p50": 6.644,
+          "p95": 7.934
+        },
+        "rerank_ms": {
+          "p50": 208.414,
+          "p95": 230.123
+        },
+        "total_ms": {
+          "p50": 216.557,
+          "p95": 237.194
+        }
+      },
+      "mean_reranker_pairs": 39
+    }
+  ],
+  "paired_cluster_bootstrap_ndcg_delta": [
+    -0.030602,
+    0.030703
+  ],
+  "contracts": {
+    "explanation_cases": 36,
+    "grounded": 36,
+    "missing_skill_correct": 36,
+    "consistent": 36,
+    "unsupported_claim_rate": 0,
+    "local_preference_cases": 8,
+    "local_preferences_correct": 8,
+    "hosted_llm": null
+  }
+}
