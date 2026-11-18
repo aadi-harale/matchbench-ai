@@ -3,7 +3,7 @@ from functools import lru_cache
 from typing import Any
 
 import numpy as np
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from .db import Decision, JobEmbedding, JobVersion, Run, User
@@ -33,7 +33,16 @@ def cosine_resolver(session: Session, rows: list[JobVersion]):
         )
         if postgres:
             similarity = 1 - JobEmbedding.vector.cosine_distance(query)
-            return {jobs[key]: float(value) for key, value in session.execute(statement.add_columns(similarity))}
+            # Keep the BM25 fallback usable when a database-side vector operator
+            # is unavailable. PostgreSQL otherwise leaves the whole request
+            # transaction aborted after the caught retrieval error.
+            with session.begin_nested():
+                # Supabase installs pgvector in `extensions`, while local
+                # Postgres commonly installs it in `public`. SET LOCAL works
+                # with transaction poolers and makes both layouts resolvable.
+                session.execute(text("SET LOCAL search_path TO public, extensions"))
+                results = session.execute(statement.add_columns(similarity)).all()
+            return {jobs[key]: float(value) for key, value in results}
         results = session.execute(statement.add_columns(JobEmbedding.vector)).all()
         if not results:
             return {}
