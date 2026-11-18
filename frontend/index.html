@@ -4,8 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f3f7fb" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="An inspectable job search and ranking benchmark. See which opportunities fit, why others were excluded, and how the ranking was measured." />
     <title>MatchBench AI — Explainable job ranking</title>
+    <script>
+      (() => {
+        const saved = localStorage.getItem("matchbench-theme-v1");
+        const theme = saved === "light" || saved === "dark"
+          ? saved
+          : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#0b1420" : "#f3f7fb";
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

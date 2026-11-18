@@ -69,8 +69,8 @@ export default function Explorer({
     {run?.warnings.map(warning => <p className="notice" role="status" key={warning}>{warning}</p>)}
     <div className="workbench-heading">
       <div>
-        <h2 id="results-heading">{daily ? "Daily matches" : "Job explorer"}</h2>
-        <p>{run ? `${run.counts.indexed} indexed postings · ${algorithmNames[run.algorithm] ?? run.algorithm}` : "Search the indexed postings."}</p>
+        <h2 id="results-heading">{daily ? "Daily matches" : "Ranked results"}</h2>
+        <p>{run ? `${run.counts.indexed} jobs searched using ${algorithmNames[run.algorithm] ?? run.algorithm}` : "Search the indexed postings."}</p>
       </div>
       {!daily && <div className="segmented" aria-label="Result list">
         <button type="button" aria-pressed={!showExcluded} onClick={() => setShowExcluded(false)}>Ranked {run ? <span>{run.counts.retrieved}</span> : null}</button>
@@ -91,8 +91,10 @@ export default function Explorer({
               {entry.checks.find(item => item.state === entry.status)?.label ?? statusLabels[entry.status]}
             </span>}
           </span>
-          {entry.rank === null ? <span className="rank-number"><X size={15} aria-hidden /></span> :
-            <span className="rank-number" aria-label={`Rank ${entry.rank}`}>#{entry.rank}</span>}
+          <span className="row-decision">
+            <Status state={entry.status} />
+            {entry.rank !== null && <span className="rank-number" aria-label={`Rank ${entry.rank}`}>#{entry.rank}</span>}
+          </span>
         </button>)}
       </div>
       {detail && run && <Detail key={`${run.run_id}-${detail.job.id}`} match={detail} run={run} onPreference={onPreference} />}

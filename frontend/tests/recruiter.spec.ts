@@ -5,7 +5,9 @@ test("recruiter can verify an exclusion and recompute a decision", async ({ page
   page.on("pageerror", error => failures.push(error.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Find the jobs you");
-  await expect(page.getByRole("heading", { name: "Job explorer" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From search to a defensible shortlist." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ranked results" })).toBeVisible();
+  await expect(page.locator(".job-row").first()).toContainText("Eligible");
   await page.getByRole("button", { name: "Inspect a rejected match" }).click();
   await expect(page.getByRole("heading", { name: "Senior AI Search & Backend Engineer" })).toBeVisible();
   await expect(page.getByText("Why it was excluded")).toBeVisible();
@@ -25,19 +27,31 @@ test("recruiter can verify an exclusion and recompute a decision", async ({ page
 
 test("preference review persists and refreshes ranking", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Job explorer" })).toBeVisible();
-  await page.getByRole("navigation").getByRole("button", { name: "Memory" }).click();
+  await expect(page.getByRole("heading", { name: "Ranked results" })).toBeVisible();
+  await page.getByRole("navigation").getByRole("button", { name: "Preferences" }).click();
   await page.getByRole("button", { name: "No frontend-heavy roles" }).click();
   await page.getByRole("button", { name: "Interpret preference" }).click();
   await expect(page.getByRole("heading", { name: "Proposed change" })).toBeVisible();
   await page.getByRole("button", { name: "Confirm change" }).click();
   await expect(page.getByText("Saved to memory v2", { exact: false })).toBeVisible();
-  await page.getByRole("navigation").getByRole("button", { name: "Explorer" }).click();
+  await page.getByRole("navigation").getByRole("button", { name: "Results" }).click();
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page.getByText("Memory v1", { exact: false })).toBeVisible();
   await page.reload();
-  await page.getByRole("navigation").getByRole("button", { name: "Memory" }).click();
+  await page.getByRole("navigation").getByRole("button", { name: "Preferences" }).click();
   await expect(page.getByRole("button", { name: "Remove frontend from Excluded roles" })).toBeVisible();
+});
+
+test("theme choice is applied and remembered", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Ranked results" })).toBeVisible();
+  const before = await page.evaluate(() => document.documentElement.dataset.theme);
+  await page.getByRole("button", { name: `Switch to ${before === "dark" ? "light" : "dark"} mode` }).click();
+  const after = before === "dark" ? "light" : "dark";
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.theme)).toBe(after);
+  expect(await page.evaluate(() => localStorage.getItem("matchbench-theme-v1"))).toBe(after);
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.theme)).toBe(after);
 });
 
 for (const width of [320, 768, 1024, 1440]) {

@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowUpRight, BookOpen, ChevronRight, CircleAlert, Layers3, Play, ShieldCheck } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, BookOpen, ChevronRight, CircleAlert, Layers3, Moon, Play, ShieldCheck, Sun } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { api, decimal, defaultQuery, readableError } from "./api";
@@ -12,6 +12,19 @@ import Profile from "./Profile";
 const pages = ["Explorer", "Daily matches", "Candidate profile", "Memory", "Evaluation"] as const;
 type Page = typeof pages[number];
 type Movement = { from: number; to: number; delta: number; gone: number };
+type Theme = "light" | "dark";
+
+const pageLabels: Record<Page, string> = {
+  Explorer: "Results",
+  "Daily matches": "Daily matches",
+  "Candidate profile": "Profile",
+  Memory: "Preferences",
+  Evaluation: "Benchmarks",
+};
+
+function initialTheme(): Theme {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
 
 export default function App() {
   const [page, setPage] = useState<Page>("Explorer");
@@ -29,6 +42,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [accountOpen, setAccountOpen] = useState(false);
   const [movement, setMovement] = useState<Movement | null>(null);
+  const [theme, setTheme] = useState<Theme>(initialTheme);
   const previous = useRef<{ key: string; run: Run; daily: boolean } | null>(null);
   const searchGeneration = useRef(0);
   const refreshMemory = useCallback(async () => setMemory(await api<MemoryResponse>("/api/preferences")), []);
@@ -112,6 +126,15 @@ export default function App() {
     }
     requestAnimationFrame(() => document.getElementById("results-heading")?.scrollIntoView({ block: "start" }));
   }
+  function toggleTheme() {
+    setTheme(current => {
+      const next = current === "light" ? "dark" : "light";
+      document.documentElement.dataset.theme = next;
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "dark" ? "#0b1420" : "#f3f7fb");
+      localStorage.setItem("matchbench-theme-v1", next);
+      return next;
+    });
+  }
 
   const currentDemoRun = identity?.demo && query === defaultQuery ? run : null;
   const senior = currentDemoRun?.excluded.find(row => row.job.id === "agent-senior");
@@ -126,11 +149,18 @@ export default function App() {
         </button>
         <nav className="top-nav" aria-label="Workspace screens">
           {pages.map(label => <button type="button" key={label} aria-current={page === label ? "page" : undefined}
-            onClick={() => navigate(label)}>{label}</button>)}
+            onClick={() => navigate(label)}>{pageLabels[label]}</button>)}
         </nav>
-        <button className="account-button" type="button" onClick={() => setAccountOpen(true)}>
-          <span className="account-dot" aria-hidden />{identity?.demo ? "Demo session" : identity ? "Account" : "Sign in"}
-        </button>
+        <div className="header-actions">
+          <button className="theme-button" type="button" onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Use ${theme === "light" ? "dark" : "light"} mode`}>
+            {theme === "light" ? <Moon size={16} aria-hidden /> : <Sun size={16} aria-hidden />}
+            <span>{theme === "light" ? "Dark" : "Light"}</span>
+          </button>
+          <button className="account-button" type="button" onClick={() => setAccountOpen(true)}>
+            <span className="account-dot" aria-hidden />{identity?.demo ? "Demo session" : identity ? "Account" : "Sign in"}
+          </button>
+        </div>
       </div>
     </header>
     <main className="shell" id="workspace">
@@ -156,8 +186,19 @@ export default function App() {
           </span></div>
         </div>
       </section>}
+      {page === "Explorer" && <section className="orientation" aria-labelledby="orientation-heading">
+        <div className="orientation-intro">
+          <h2 id="orientation-heading">From search to a defensible shortlist.</h2>
+          <p>Every match shows the decision and the evidence behind it.</p>
+        </div>
+        <ol>
+          <li><span aria-hidden>1</span><div><strong>Search a role</strong><p>Describe the work you want.</p></div></li>
+          <li><span aria-hidden>2</span><div><strong>Check eligibility</strong><p>Dealbreakers are applied first.</p></div></li>
+          <li><span aria-hidden>3</span><div><strong>Verify the evidence</strong><p>Open any result to audit why.</p></div></li>
+        </ol>
+      </section>}
       {page !== "Explorer" && <div className="breadcrumb"><button type="button" onClick={() => navigate("Explorer")}>MatchBench</button>
-        <ChevronRight size={14} aria-hidden />{page}</div>}
+        <ChevronRight size={14} aria-hidden />{pageLabels[page]}</div>}
       {error && <p className="notice error" role="alert"><CircleAlert size={17} aria-hidden />{error}</p>}
       {movement && page === "Explorer" && <p className="notice movement" role="status">
         Memory v{movement.from} → v{movement.to}. {movement.delta} reordered, {movement.gone} left the visible shortlist.</p>}
@@ -172,7 +213,7 @@ export default function App() {
         onSave={setProfile} memory={memory} openMemory={() => navigate("Memory")} />}
       {page === "Memory" && <Memory state={memory} refresh={refreshMemory} save={savePreference} />}
       {page === "Evaluation" && <Evaluation report={report} />}
-      <footer className="footer"><span>{identity?.demo ? "Illustrative postings. Demo profile cites public project evidence." : "MatchBench AI · Evidence-linked job ranking"}</span>
+      <footer className="footer"><span>{identity?.demo ? "Illustrative postings. Demo profile cites public project evidence." : "MatchBench AI. Evidence-linked job ranking."}</span>
         <a href="/docs" target="_blank" rel="noreferrer"><BookOpen size={15} aria-hidden /> API docs <ArrowUpRight size={14} aria-hidden /></a></footer>
     </main>
     {accountOpen && <AccountPanel identity={identity} close={() => setAccountOpen(false)} start={takeDemo}
