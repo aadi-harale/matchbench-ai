@@ -1,11 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "fastapi",
-  "buildCommand": "npm ci --prefix frontend && npm run build --prefix frontend",
+  "buildCommand": "npm ci --prefix frontend && npm run build --prefix frontend && python3 -m matchbench.model_assets",
   "functions": {
     "app.py": {
       "maxDuration": 60,
-      "includeFiles": "{data/**,frontend/dist/**}"
+      "includeFiles": "{data/**,frontend/dist/**,.models/**}"
     }
   }
 }

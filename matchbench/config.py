@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from secrets import token_urlsafe
+from typing import Literal
 
 from pydantic import Field, HttpUrl, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -27,6 +28,7 @@ class Settings(BaseSettings):
     openai_api_key: SecretStr | None = None
     llm_base_url: HttpUrl | None = None
     llm_model: str = "gpt-4.1-mini"
+    llm_mode: Literal["tools", "schema"] = "tools"
     llm_timeout_seconds: float = 8
     allow_demo_llm: bool = False
     max_upload_bytes: int = 4 * 1024 * 1024
@@ -34,6 +36,7 @@ class Settings(BaseSettings):
     create_schema: bool = False
     cors_origins: list[str] = []
     rerank_timeout_seconds: float = 2.5
+    index_stale_hours: float = 168
 
     @property
     def llm_enabled(self) -> bool:

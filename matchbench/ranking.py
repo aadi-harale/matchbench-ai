@@ -276,7 +276,8 @@ def rank(
     visible = scored
     if search.strong_only:
         visible = [entry for entry in scored if entry["scores"]["skill_coverage"] >= 0.5
-                   and entry["scores"]["final"] >= 0.38]
+                   and entry["scores"]["final"] >= 0.38
+                   and (entry["scores"]["semantic"] or 0) >= 0.25]
 
     diagnostic_keys = set(corpus.jobs) - eligible
     hidden = [row(key, None) | {"rank": None} for key in sorted(

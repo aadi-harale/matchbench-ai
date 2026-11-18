@@ -90,6 +90,13 @@ class JobEmbedding(Base):
     vector: Mapped[Any] = mapped_column(Vector(384).with_variant(JSON(), "sqlite"))
 
 
+class IndexImport(Base):
+    __tablename__ = "index_imports"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[str] = mapped_column(default=now)
+    counts: Mapped[dict[str, int | float]] = mapped_column(JSON)
+
+
 class Run(Base):
     __tablename__ = "match_runs"
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=identifier)

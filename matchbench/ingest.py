@@ -9,7 +9,7 @@ from typing import Any
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from .db import JobEmbedding, JobRow, JobVersion
+from .db import IndexImport, JobEmbedding, JobRow, JobVersion
 from .models import EMBED_ID, Models
 from .schemas import Job
 
@@ -101,6 +101,7 @@ def ingest(
             session.add(JobEmbedding(key=key, model=EMBED_ID, vector=vector.tolist()))
         counts["embedded"] = len(wanted)
     counts["elapsed_ms"] = round((perf_counter() - started) * 1000, 2)
+    session.add(IndexImport(counts=counts))
     return counts
 
 

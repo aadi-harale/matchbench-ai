@@ -5,7 +5,8 @@ from pathlib import Path
 from .config import DATA, Settings
 from .db import engine_for, sessions
 from .ingest import ingest, read_records
-from .models import Models, download_models
+from .model_assets import download_models
+from .models import Models
 
 
 def main() -> None:

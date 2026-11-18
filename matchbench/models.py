@@ -3,50 +3,15 @@ from functools import lru_cache
 from pathlib import Path
 from threading import BoundedSemaphore
 
-import httpx
 import numpy as np
 import onnxruntime as ort
 from numpy.typing import NDArray
 from tokenizers import Tokenizer
 
-MODELS = {
-    "embed": ("sentence-transformers/all-MiniLM-L6-v2", "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"),
-    "rank": ("cross-encoder/ms-marco-MiniLM-L6-v2", "233902d25c440f23af6f7d6e94d2946bac0bee0a"),
-}
-WEIGHTS = "onnx/model_quint8_avx2.onnx"
-MODEL_IDS = {key: f"{repo}@{rev}:{WEIGHTS}" for key, (repo, rev) in MODELS.items()}
+from .model_assets import MODEL_IDS
+
 EMBED_ID = MODEL_IDS["embed"]
 RERANK_ID = MODEL_IDS["rank"]
-
-
-def download_models(target: Path) -> None:
-    def download(key: str) -> None:
-        repo, revision = MODELS[key]
-        directory = target / key
-        directory.mkdir(parents=True, exist_ok=True)
-        with httpx.Client(follow_redirects=True, timeout=90) as client:
-            for name, remote, minimum in (
-                ("tokenizer.json", "tokenizer.json", 500),
-                ("model.onnx", WEIGHTS, 10_000_000),
-            ):
-                path = directory / name
-                if path.exists() and path.stat().st_size > minimum:
-                    continue
-                temporary = path.with_suffix(".part")
-                try:
-                    url = f"https://huggingface.co/{repo}/resolve/{revision}/{remote}"
-                    with client.stream("GET", url, params={"download": "true"}) as response:
-                        response.raise_for_status()
-                        with temporary.open("wb") as stream:
-                            for chunk in response.iter_bytes():
-                                stream.write(chunk)
-                    if temporary.stat().st_size < minimum:
-                        raise RuntimeError(f"Invalid model asset {key}/{name}")
-                    temporary.replace(path)
-                finally:
-                    temporary.unlink(missing_ok=True)
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        list(pool.map(download, MODELS))
 
 
 class Encoder:

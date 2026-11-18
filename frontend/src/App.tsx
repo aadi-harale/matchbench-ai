@@ -107,8 +107,9 @@ export default function App() {
     requestAnimationFrame(() => document.getElementById("results-heading")?.scrollIntoView({ block: "start" }));
   }
 
-  const senior = run?.excluded.find(row => row.job.id === "agent-senior");
-  const firstMatch = run?.matches[0];
+  const currentDemoRun = identity?.demo && query === defaultQuery ? run : null;
+  const senior = currentDemoRun?.excluded.find(row => row.job.id === "agent-senior");
+  const firstMatch = currentDemoRun?.matches[0];
   return <>
     <a className="skip-link" href="#workspace">Skip to workspace</a>
     <header className="topbar">
@@ -145,7 +146,7 @@ export default function App() {
             {senior?.scores.semantic != null && <span className="proof-score"><strong>{decimal(senior.scores.semantic, 2)}</strong><small>similarity</small></span>}
           </div>
           <div className="proof-win"><ArrowDownRight size={17} aria-hidden /><span>
-            {firstMatch ? <>Moved into the shortlist <b>{firstMatch.job.title}</b></> : "Eligible internships enter the shortlist"}
+            {firstMatch ? <>Top eligible match <b>{firstMatch.job.title}</b></> : "Eligible internships enter the shortlist"}
           </span></div>
         </div>
       </section>}

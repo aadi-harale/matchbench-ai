@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from time import perf_counter
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 from pydantic import Field, ValidationError
@@ -16,6 +16,45 @@ from .state import apply_changes
 class Proposal(StrictModel):
     changes: list[PreferencePatch] = Field(max_length=8)
     question: str | None = Field(max_length=300)
+
+
+class Intent(StrictModel):
+    action: Literal["exclude_role", "prefer_role", "less_role", "allow_role", "allow_city", "paid_only", "minimum", "ask"]
+    value: str
+
+    def to_proposal(self) -> Proposal:
+        if self.action == "ask":
+            return Proposal(changes=[], question="Which unconditional preference should I save?")
+        value = self.value.casefold().strip()
+        roles = {"backend", "frontend", "search", "platform", "data", "evaluation", "mobile", "security"}
+        if self.action in {"exclude_role", "prefer_role", "less_role", "allow_role"} and value not in roles:
+            raise ValueError("Unknown role family")
+        if self.action == "allow_role":
+            return Proposal(changes=[
+                PreferencePatch(field="denied_roles", operation="remove", value=value),
+                PreferencePatch(field="less_roles", operation="remove", value=value),
+            ], question=None)
+        mapping = {"exclude_role": "denied_roles", "prefer_role": "preferred_roles", "less_role": "less_roles",
+                   "allow_city": "locations"}
+        if self.action in mapping:
+            patch = PreferencePatch.model_validate({"field": mapping[self.action], "operation": "add",
+                                                   "value": value.title() if self.action == "allow_city" else value})
+        elif self.action == "paid_only":
+            patch = PreferencePatch(field="paid_only", operation="set", value=True)
+        else:
+            patch = PreferencePatch(field="minimum_stipend", operation="set", value=int(value))
+        return Proposal(changes=[patch], question=None)
+
+
+SCHEMA_PROMPT = (
+    'Classify the user\'s job preference. Output JSON with action and value. '
+    'Only use exclude_role for an explicit ban, less_role for fewer results, prefer_role for more, '
+    'allow_role for reversing an exclusion, allow_city for adding a location, paid_only for no unpaid jobs, '
+    'minimum for an INR amount (30k is 30000). Use ask for conditional or out-of-domain requests. '
+    'Examples: No frontend roles -> exclude_role, frontend. Show less frontend -> less_role, frontend. '
+    'Allow Hyderabad -> allow_city, Hyderabad. No unpaid jobs -> paid_only, yes. '
+    'Only if it pays well -> ask, none.'
+)
 
 
 def local_proposal(message: str) -> Proposal:
@@ -91,18 +130,32 @@ def agent_proposal(
                 usage["attempts"] += 1
                 tool_name = "model_request"
                 try:
+                    body = {"model": settings.llm_model, "messages": history, "temperature": 0}
+                    if settings.llm_mode == "schema":
+                        body.update({"messages": [{"role": "system", "content": SCHEMA_PROMPT},
+                                                  {"role": "user", "content": message}],
+                                     "max_tokens": 90, "response_format": {"type": "json_schema", "json_schema": {
+                                         "name": "job_preference", "schema": Intent.model_json_schema(), "strict": True,
+                                     }}})
+                    else:
+                        body.update({"tools": [LOOKUP, proposal_tool()], "parallel_tool_calls": False,
+                                     "tool_choice": "required", "max_tokens": 260})
                     response = client.post(
                         f"{endpoint}/chat/completions",
                         headers=headers,
-                        json={"model": settings.llm_model, "messages": history, "tools": [LOOKUP, proposal_tool()],
-                              "parallel_tool_calls": False, "tool_choice": "required", "max_tokens": 260,
-                              "temperature": 0},
+                        json=body,
                     )
                     response.raise_for_status()
                     payload = response.json()
                     usage["input_tokens"] += payload.get("usage", {}).get("prompt_tokens", 0)
                     usage["output_tokens"] += payload.get("usage", {}).get("completion_tokens", 0)
                     reply = payload["choices"][0]["message"]
+                    if settings.llm_mode == "schema":
+                        tool_name = "propose_preference_change"
+                        proposal = Intent.model_validate_json(reply["content"]).to_proposal()
+                        apply_changes(preferences, proposal.changes)
+                        traces.append(trace(tool_name, started, "validated"))
+                        return proposal, provider, usage, traces
                     call, = reply["tool_calls"]
                     tool_name = call["function"]["name"]
                     arguments = call["function"]["arguments"]

@@ -1,6 +1,7 @@
 from collections import Counter
 from collections.abc import Iterator
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from threading import Lock
 from time import perf_counter
@@ -24,6 +25,7 @@ from .db import (
     Base,
     Decision,
     Feedback,
+    IndexImport,
     JobRow,
     PreferenceEvent,
     ProfileVersion,
@@ -180,14 +182,18 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     @app.get("/ready")
     def ready(session: Session = Depends(db_session)):
         total = session.scalar(select(func.count()).select_from(JobRow))
+        latest = session.scalar(select(IndexImport).order_by(IndexImport.id.desc()).limit(1))
         return {"status": "ready", "jobs": total, "database": engine.dialect.name,
                 "embeddings": models.available("embed"), "reranker": models.available("rank"),
-                "llm_configured": settings.llm_enabled}
+                "llm_configured": settings.llm_enabled,
+                "last_ingestion": latest.created_at if latest else None,
+                "ingestion": latest.counts if latest else None}
 
     @app.get("/api/observability")
     def telemetry():
         with metrics_lock:
-            return {"api": dict(metrics), "duration_ms": durations.copy()}
+            return {"api": dict(metrics), "duration_ms": durations.copy(),
+                    "query_embedding_cache": models.query_vector.cache_info()._asdict()}
 
     @app.post("/api/auth/demo")
     def demo(response: Response, session: Session = Depends(db_session)):
@@ -309,6 +315,13 @@ def create_app(settings: Settings | None = None, *, database=None) -> FastAPI:
     @app.post("/api/search")
     def search(body: SearchRequest, session: Session = Depends(db_session), user: User = Depends(get_user)):
         result = execute(session, user, body, models, settings.rerank_timeout_seconds, alpha=alpha)
+        latest = session.scalar(select(IndexImport.created_at).order_by(IndexImport.id.desc()).limit(1))
+        if latest and datetime.fromisoformat(latest) < datetime.now(UTC) - timedelta(hours=settings.index_stale_hours):
+            result["warnings"].append("The job index has not been refreshed recently. Check the original posting.")
+        with metrics_lock:
+            for stage, value in result["timing"].items():
+                key = f"search/{result['algorithm']}/{stage}"
+                durations[key] = durations.get(key, 0.0) + value
         session.commit()
         return result
 
